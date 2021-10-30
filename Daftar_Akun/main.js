@@ -1,14 +1,28 @@
-const searchBox = document.querySelector(".search-box");
-const navBtnContainer = document.querySelector(".nav-btn-container");
-const searchBtn = document.querySelector(".search-btn");
-const closeBtn = document.querySelector(".close-btn");
+const solutions = document.getElementById('#solutions');
+const more = document.getElementById('#more');
 
-searchBtn.addEventListener("click", () => {
-  searchBox.classList.add("active");
-  navBtnContainer.classList.add("active");
+solutions.addEventListener('click', ()=> {
+    if (menu.classList.contains('hidden')){
+        menu.classList.remove('hidden');
+    }
+    else{
+        menu.classList.add('hidden');
+    }
 });
 
-closeBtn.addEventListener("click", () => {
-  searchBox.classList.remove("active");
-  navBtnContainer.classList.remove("active");
+more.addEventListener('click', ()=> {
+  if (menu.classList.contains('hidden')){
+      menu.classList.remove('hidden');
+  }
+  else{
+      menu.classList.add('hidden');
+  }
 });
+
+function myFunction(a) {
+  if (a.style.display === "none") {
+    a.style.display = "block";
+  } else {
+    a.style.display = "none";
+  }
+}

@@ -5,78 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Welcome</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../public/styles.css" />
   </head>
   <body>
-    <div class="search-box">
-      <input type="text" placeholder="Search here..." />
-    </div>
-
-    <div class="nav-container">
-      <div class="wrapper">
-        <nav>
-          <div class="logo">
-            <img src="images/logo patris 2.png" alt="logo patris">
-          </div>
-
-          <ul class="nav-items">
-            <li>
-              <a href="#">blog</a>
-            </li>
-
-            <li>
-              <a href="#">contact</a>
-            </li>
-
-            <li>
-              <a href="#">about</a>
-            </li>
-
-            <li>
-              <a class="nav-btn-container" href="#">
-                <img class="search-btn" src="images/search-icon.svg" alt="" />
-                <img class="close-btn" src="images/close-icon.svg" alt="" />
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-
-    <div class="header-container">
-      <div class="wrapper">
-        <header>
-          <div class="hero-content">
-            <h1>Hi, I’m Darlene</h1>
-            <p>
-              I design beautiful websites & mobile apps that modern trends
-              demand
-            </p>
+    <!--Header-->
+    <header class="text-white relative bg-pinkpatris">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex items-center border-b-2 py-6 justify-start space-x-10">
+          <div class="flex justify-start">
             <a href="#">
-              Contact Me
+              <span class="sr-only">Workflow</span>
+              <img class="w-auto h-10" src="images/logo patris 2.png" alt="">
             </a>
           </div>
-
-          <div class="hero-image">
-            <img src="images/photo.png" alt="" />
-            <div class="photo-bg"></div>
+          <div class="flex space-x-10">
+            <div class="w-auto h-10">
+              <div class="w-auto h-10 bg-white opacity-50 flex items-center rounded-full shadow-xl">
+                <input class="w-auto h-10 rounded-l-full py-4 px-6 text-gray-700 leading-tight focus:outline-none" id="search" type="text" placeholder="Search">
+                <div class="p-4">
+                  <button class="rounded-full p-2 hover:bg-blue-400 w-auto h-12 flex items-center justify-center">
+                    <img src="images/search.png" alt="">
+                  </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </header>
-
-        <div class="social-icons">
-          <a href="#">
-            <img src="images/instagram-logo.png" alt="" />
-          </a>
-          <a href="#">
-            <img src="images/behance-logo.png" alt="" />
-          </a>
-          <a href="#">
-            <img src="images/dribbble-logo.png" alt="" />
-          </a>
+          <div class="flex items-center justify-end flex-1">
+            <a href="#" class="whitespace-nowrap text-base font-medium hover:text-gray-900">
+              Beranda
+            </a>
+            <a href="#" class="ml-8 whitespace-nowrap text-base font-medium hover:text-gray-900">
+              Keranjang
+            </a>
+            <a href="#" class="w-36 ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-base font-medium bg-white text-pinkpatris">
+              Masuk
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-
+    </header>
+    <!--Footer-->
+    <footer class="footer bg-white relative pt-1 border-b-2 border-blue-700">
+      <div class="container mx-auto px-6">
+  
+          <div class="sm:flex sm:mt-8">
+              <div class="mt-8 sm:mt-0 sm:w-full sm:px-8 flex flex-col md:flex-row justify-between">
+                  <div class="flex flex-col">
+                      <span class="font-bold text-gray-700 uppercase mb-2">Footer header 1</span>
+                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+                  </div>
+                  <div class="flex flex-col">
+                      <span class="font-bold text-gray-700 uppercase mt-4 md:mt-0 mb-2">Footer header 2</span>
+                      <span class="my-2"><a href="#" class="text-blue-700 text-md hover:text-blue-500">link 1</a></span>
+                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+                      <span class="my-2"><a href="#" class="text-blue-700 text-md hover:text-blue-500">link 1</a></span>
+                  </div>
+                  <div class="flex flex-col">
+                      <span class="font-bold text-gray-700 uppercase mt-4 md:mt-0 mb-2">Footer header 3</span>
+                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="container mx-auto px-6">
+          <div class="mt-16 border-t-2 border-gray-300 flex flex-col items-center">
+              <div class="sm:w-2/3 text-center py-6">
+                  <p class="text-sm text-blue-700 font-bold mb-2">
+                      © 2020 by Pavlove BIOKOU
+                  </p>
+              </div>
+          </div>
+      </div>
+  </footer>
     <script src="main.js"></script>
   </body>
 </html>
