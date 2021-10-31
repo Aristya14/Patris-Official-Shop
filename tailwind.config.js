@@ -10,6 +10,9 @@ module.exports = {
           200: '#888883',
         },
         pinkpatris: '#F0628C',
+        greypatris: '#ACACAC',
+        brownpatris: '#60544C',
+        bluepatris: '#2B98F0',
       },
       fontFamily:{
         body: ['Nunito']

@@ -9,16 +9,17 @@
   </head>
   <body>
     <!--Header-->
-    <header class="text-white relative bg-pinkpatris">
+    <header class="text-white bg-pinkpatris sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex items-center border-b-2 py-6 justify-start space-x-10">
-          <div class="flex justify-start">
+          <div class="grid justify-start grid-cols-1">
             <a href="#">
               <span class="sr-only">Workflow</span>
               <img class="w-auto h-10" src="images/logo patris 2.png" alt="">
             </a>
           </div>
-          <div class="flex space-x-10">
+          <!--Konten-->
+          <div class="flex items-center justify-end flex-1">
             <div class="w-auto h-10">
               <div class="w-auto h-10 bg-white opacity-50 flex items-center rounded-full shadow-xl">
                 <input class="w-auto h-10 rounded-l-full py-4 px-6 text-gray-700 leading-tight focus:outline-none" id="search" type="text" placeholder="Search">
@@ -30,58 +31,111 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="flex items-center justify-end flex-1">
             <a href="#" class="whitespace-nowrap text-base font-medium hover:text-gray-900">
               Beranda
             </a>
             <a href="#" class="ml-8 whitespace-nowrap text-base font-medium hover:text-gray-900">
               Keranjang
             </a>
-            <a href="#" class="w-36 ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-base font-medium bg-white text-pinkpatris">
+            <a href="#" class="ml-8 whitespace-nowrap items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-base font-medium bg-white text-pinkpatris">
               Masuk
             </a>
           </div>
         </div>
       </div>
     </header>
+    <div>
+      <img src="images/Group 436.png" alt="">
+    </div>
+    <div class="bg-grey-lighter min-h-screen flex flex-col text-greypatris">
+      <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+          <div class="bg-white px-6 py-8 rounded text-black shadow-md w-full">
+              <h1 class="mb-8 text-3xl text-center text-brownpatris">Sign up</h1>
+              <input 
+                  type="text"
+                  class="block border border-grey-light w-full p-3 rounded mb-4"
+                  name="fullname"
+                  placeholder="Full Name" />
+
+              <input 
+                  type="text"
+                  class="block border border-grey-light w-full p-3 rounded mb-4"
+                  name="email"
+                  placeholder="Email" />
+
+              <input 
+                  type="password"
+                  class="block border border-grey-light w-full p-3 rounded mb-4"
+                  name="password"
+                  placeholder="Password" />
+              <input 
+                  type="password"
+                  class="block border border-grey-light w-full p-3 rounded mb-4"
+                  name="confirm_password"
+                  placeholder="Confirm Password" />
+
+              <div class="text-center text-sm mt-4">
+                  Kami akan mengirim email berisi <br> kode verifikasi!
+              </div>
+              <div class="pt-6 flex justify-center">
+                <a href="#" class="btn w-36 text-center text-bluepatris font-sans border-bluepatris border-2 hover:bg-bluepatris hover:text-white transition ease-out duration-500">Daftar</a>
+              </div>
+          </div>
+      </div>
+  </div>
+
     <!--Footer-->
-    <footer class="footer bg-white relative pt-1 border-b-2 border-blue-700">
-      <div class="container mx-auto px-6">
-  
-          <div class="sm:flex sm:mt-8">
-              <div class="mt-8 sm:mt-0 sm:w-full sm:px-8 flex flex-col md:flex-row justify-between">
-                  <div class="flex flex-col">
-                      <span class="font-bold text-gray-700 uppercase mb-2">Footer header 1</span>
-                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
-                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
-                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+    
+    <footer class="bg-pinkpatris text-white">
+      <div class="container px-6 py-4 mx-auto">
+          <div class="flex">
+              <div class="-mx-6 lg:w-2/5">
+                  <div class="px-6 py-4">
+                      
+                    <img src="images/logo patris 2.png" alt="" class="drop-shadow-md">
+                      
                   </div>
-                  <div class="flex flex-col">
-                      <span class="font-bold text-gray-700 uppercase mt-4 md:mt-0 mb-2">Footer header 2</span>
-                      <span class="my-2"><a href="#" class="text-blue-700 text-md hover:text-blue-500">link 1</a></span>
-                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
-                      <span class="my-2"><a href="#" class="text-blue-700 text-md hover:text-blue-500">link 1</a></span>
-                  </div>
-                  <div class="flex flex-col">
-                      <span class="font-bold text-gray-700 uppercase mt-4 md:mt-0 mb-2">Footer header 3</span>
-                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
-                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
-                      <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+              </div>
+
+              <div class="mt-0 flex-1">
+                  <div class="grid gap-6 grid-cols-4">
+                      <div>
+                          <h3 class="uppercase dark:text-white">About</h3>
+                          <a href="#" class="block mt-2 text-sm hover:underline">Company</a>
+                          <a href="#" class="block mt-2 text-sm hover:underline">community</a>
+                          <a href="#" class="block mt-2 text-sm hover:underline">Careers</a>
+                      </div>
+
+                      <div>
+                          <h3 class="uppercase dark:text-white">Blog</h3>
+                          <a href="#" class="block mt-2 text-sm t hover:underline">Tec</a>
+                          <a href="#" class="block mt-2 text-sm t hover:underline">Music</a>
+                          <a href="#" class="block mt-2 text-sm t hover:underline">Videos</a>
+                      </div>
+
+                      <div>
+                          <h3 class="uppercase dark:text-white">Products</h3>
+                          <a href="#" class="block mt-2 text-sm dark:text-gray-400 hover:underline">Mega cloud</a>
+                          <a href="#" class="block mt-2 text-sm dark:text-gray-400 hover:underline">Aperion UI</a>
+                          <a href="#" class="block mt-2 text-sm dark:text-gray-400 hover:underline">Meraki UI</a>
+                      </div>
+
+                      <div>
+                          <h3 class="uppercase dark:text-white">Contact</h3>
+                          <span class="block mt-2 text-sm dark:text-gray-400 hover:underline">+1 526 654 8965</span>
+                          <span class="block mt-2 text-sm dark:text-gray-400 hover:underline">example@email.com</span>
+                      </div>
                   </div>
               </div>
           </div>
-      </div>
-      <div class="container mx-auto px-6">
-          <div class="mt-16 border-t-2 border-gray-300 flex flex-col items-center">
-              <div class="sm:w-2/3 text-center py-6">
-                  <p class="text-sm text-blue-700 font-bold mb-2">
-                      © 2020 by Pavlove BIOKOU
-                  </p>
-              </div>
+
+          <hr class="h-px my-6 bg-gray-300 border-none dark:bg-gray-700">
+
+          <div>
+              <p class="text-center dark:text-white">© Patris Official Shop 2021 - All rights reserved</p>
           </div>
       </div>
-  </footer>
+    </footer>
     <script src="main.js"></script>
   </body>
 </html>
