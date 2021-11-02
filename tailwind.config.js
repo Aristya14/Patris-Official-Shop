@@ -18,6 +18,15 @@ module.exports = {
         body: ['Nunito']
       }
     },
+    height: {
+      patrislogin: '496px',
+     },
+    width: {
+      patrislogin: '496px',
+      3: '0.75rem',
+      5: '1.25rem',
+      7: '1.75rem',
+     },
   },
   variants: {
     extend: {},
