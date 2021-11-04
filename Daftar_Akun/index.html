@@ -54,24 +54,24 @@
                 <h1 class="mb-8 text-3xl text-center text-brownpatris">Sign up</h1>
                 <input 
                     type="text"
-                    class="block border border-grey-light min-w-full p-3 rounded mb-4"
+                    required class="block border border-grey-light min-w-full p-3 rounded mb-4"
                     name="fullname"
                     placeholder="Nama Lengkap" />
   
                 <input 
                     type="text"
-                    class="block border border-grey-light min-w-full p-3 rounded mb-4"
+                    required class="block border border-grey-light min-w-full p-3 rounded mb-4"
                     name="email"
                     placeholder="Email" />
   
                 <input 
                     type="password"
-                    class="block border border-grey-light min-w-full p-3 rounded mb-4"
+                    required class="block border border-grey-light min-w-full p-3 rounded mb-4"
                     name="password"
                     placeholder="Kata Sandi" />
                 <input 
                     type="password"
-                    class="block border border-grey-light min-w-full p-3 rounded mb-4"
+                    required class="block border border-grey-light min-w-full p-3 rounded mb-4"
                     name="confirm_password"
                     placeholder="Konfirmasi Kata Sandi" />
   
@@ -79,7 +79,9 @@
                     Kami akan mengirim email berisi <br> kode verifikasi!
                 </div>
                 <div class="pt-6 flex justify-center">
-                  <a href="#" class="btn w- text-center text-bluepatris font-sans border-bluepatris border-2 hover:bg-bluepatris hover:text-white transition ease-out duration-500">Daftar</a>
+                  <button type="submit" class="btn w-36 text-center text-bluepatris font-sans border-bluepatris border-2 hover:bg-bluepatris hover:text-white transition ease-out duration-500">
+                    Daftar
+                  </button>
                 </div>
             </div>
         </div>
