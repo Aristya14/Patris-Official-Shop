@@ -646,8 +646,7 @@ header.header ul.white-content > li > a {
 /* logo */
 
 .logo img {
-  max-width: 120px;
-  transform: translateY(-8px);
+  max-width: 35px;
 }
 
 header.header ul li {
