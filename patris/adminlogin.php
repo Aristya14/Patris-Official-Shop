@@ -1,3 +1,34 @@
+<?php
+
+include 'connect.php';
+
+error_reporting(0);
+
+session_start();
+
+if (isset($_SESSION['username'])) {
+    header("Location: index.php");
+}
+
+if (isset($_POST['submit'])) {
+    
+        $email = $_POST['name'];
+        $password = $_POST['pass'];
+
+        $sql = "SELECT * FROM admin WHERE username = '$email' AND password='$password'";
+        $result = mysqli_query($conn, $sql);
+        if ($result->num_rows == 1) {
+            $row = mysqli_fetch_assoc($result);
+            $_SESSION['username'] = $row['username'];
+            header("Location: indexAdmin.php");
+        } else {
+            echo "<script>alert('Username or Password is wrong. Please try again!')</script>";
+        }
+    
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -32,17 +63,17 @@
                             <h3 class="mb-4">ADMIN LOGIN</h3>
 			      		</div>
 			      	</div>
-							<form action="#" class="signin-form">
+							<form class="signin-form" method="POST">
 			      		<div class="form-group mb-3">
-			      			<label class="label" for="name">Email</label>
-			      			<input type="text" class="form-control" placeholder="Email" required>
+			      			<label class="label" for="name">Username</label>
+			      			<input name="name" type="text" class="form-control" placeholder="Username" required>
 			      		</div>
 		            <div class="form-group mb-3">
 		            	<label class="label" for="password">Kata Sandi</label>
-		              <input type="password" class="form-control" placeholder="Kata Sandi" required>
+		              <input name="pass" type="password" class="form-control" placeholder="Kata Sandi" required>
 		            </div>
 		            <div class="form-group">
-		            	<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
+		            	<button name="submit" type="submit" class="form-control btn btn-primary rounded submit px-3">Masuk</button>
 		            </div>
 		            <div class="form-group d-md-flex">
 		            	<div class="w-50 text-left">
