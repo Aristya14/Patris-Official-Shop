@@ -186,21 +186,19 @@ include 'connect.php'; ?>
 
                                         // while($siswa = mysqli_fetch_array($query)){
                                         //     echo "<tr>";
-                                        while ($data=mysqli_fetch_array($query)){   
-                                        ?>
-                                        <tr>
-                                            <td><?=$data['product_id']?></td>
-                                            <td><?=$data['product_name']?></td>
-                                            <td><?=$data['product_stock']?></td>
-                                            <td><?=$data['product_category']?></td>
-                                            <td><?=$data['product_price']?></td>
-                                            <td>
-                                                <a style="color: blue ; font-weight: bolder" href='addproductAdmin.php?id=".$siswa['product_id']."'>Edit</a> |
-                                                <a style="color: red ; font-weight: bolder" href='hapus.php?id=".$siswa['product_id']."'>Hapus</a>
-                                            </td>
-                                        </tr>
-                                        <?php   
-                                        }
+                                            while ($data=mysqli_fetch_array($query)){   
+                                                echo "<tr>";                                                        
+                                                    echo "<td>".$data['product_id']."</td>";
+                                                    echo "<td>".$data['product_name']."</td>";
+                                                    echo "<td>".$data['product_stock']."</td>";
+                                                    echo "<td>".$data['product_category']."</td>";
+                                                    echo "<td>".$data['product_price']."</td>";
+                                                    echo "<td>";
+                                                        echo "<a href='addproductAdmin.php?id=".$data['product_id']."'>Edit</a> | ";
+                                                        echo "<a href='removeProduct.php?id=".$data['product_id']."'>Hapus</a>";
+                                                    echo "</td>";
+                                            echo "</tr>"; 
+                                             }
                                         ?>
                                     </tbody>
                                 </table>

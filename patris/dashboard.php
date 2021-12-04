@@ -58,26 +58,26 @@ Coded by www.creative-tim.com
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="active">
-            <a href="./dashboard.html">
+            <a href="./dashboard.php">
               <i>
                 <img src="https://img.icons8.com/material-outlined/24/fa314a/dashboard-layout.png" /></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li>
-            <a href="./productAdmin.html">
+            <a href="./productAdmin.php">
               <i><img src="https://img.icons8.com/ios-filled/50/fa314a/women-shoe-side-view.png" /></i>
               <p>Produk</p>
             </a>
           </li>
           <li>
-            <a href="./map.html">
+            <a href="./map.php">
               <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
               <p>Pesanan</p>
             </a>
           </li>
           <li>
-            <a href="./notifications.html">
+            <a href="./notifications.php">
               <i>
                 <img
                   src="https://img.icons8.com/external-bearicons-glyph-bearicons/64/fa314a/external-positive-review-reputation-bearicons-glyph-bearicons.png" />
@@ -86,7 +86,7 @@ Coded by www.creative-tim.com
             </a>
           </li>
           <li>
-            <a href="./tables.html">
+            <a href="./tables.php">
               <i><img src="https://img.icons8.com/ios-filled/64/fa314a/combo-chart.png" /></i>
               <p>Statistik Penjualan</p>
             </a>
