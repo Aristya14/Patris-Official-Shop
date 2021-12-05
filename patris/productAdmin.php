@@ -171,7 +171,7 @@ include 'connect.php'; ?>
                                             <th style="text-align:center;">ID</th>
                                             <th>Nama Product</th>
                                             <!-- <th>Gambar</th> -->
-                                            <!-- <th>Deskripsi</th> -->
+                                            
                                             <th>Stok</th>
                                             <th>Kategori</th>
                                             <th>Harga</th>
@@ -184,8 +184,6 @@ include 'connect.php'; ?>
                                         $sql = "SELECT * FROM product";
                                         $query = mysqli_query($conn, $sql);
 
-                                        // while($siswa = mysqli_fetch_array($query)){
-                                        //     echo "<tr>";
                                             while ($data=mysqli_fetch_array($query)){   
                                                 echo "<tr>";                                                        
                                                     echo "<td>".$data['product_id']."</td>";
@@ -197,9 +195,9 @@ include 'connect.php'; ?>
                                                         echo "<a href='addproductAdmin.php?id=".$data['product_id']."'>Edit</a> | ";
                                                         echo "<a href='removeProduct.php?id=".$data['product_id']."'>Hapus</a>";
                                                     echo "</td>";
-                                            echo "</tr>"; 
+                                                echo "</tr>"; 
                                              }
-                                        ?>
+                                             ?>
                                     </tbody>
                                 </table>
                         </div>

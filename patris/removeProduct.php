@@ -1,25 +1,19 @@
 <?php
 
-include("connect.php");
+include "connect.php"; // Using database connection file here
 
-if( isset($_GET['product_id']) ){
+$id = $_GET['id']; // get id through query string
 
-    // ambil id dari query string
-    $id = $_GET['product_id'];
+$del = mysqli_query($conn,"delete from product where product_id = '$id'"); // delete query
 
-    // buat query hapus
-    $sql = "DELETE FROM product WHERE product_id=$id";
-    $query = mysqli_query($conn, $sql);
-
-    // apakah query hapus berhasil?
-    if( $query ){
-        header('Location: productAdmin.php');
-    } else {
-        die("gagal menghapus...");
-    }
-
-} else {
-    die("akses dilarang...");
+if($del)
+{
+    mysqli_close($conn); // Close connection
+    header("location:productAdmin.php"); // redirects to all records page
+    exit;	
 }
-
+else
+{
+    echo "Error deleting record"; // display error message if not delete
+}
 ?>
