@@ -170,8 +170,7 @@ include 'connect.php'; ?>
                                         <tr style="color: white" >
                                             <th style="text-align:center;">ID</th>
                                             <th>Nama Product</th>
-                                            <!-- <th>Gambar</th> -->
-                                            
+                                            <th>Gambar</th>
                                             <th>Stok</th>
                                             <th>Kategori</th>
                                             <th>Harga</th>
@@ -189,6 +188,7 @@ include 'connect.php'; ?>
                                                 <tr>                                                        
                                                     <td><?php echo $data['product_id'];?></td>
                                                     <td><?php echo $data['product_name'];?></td>
+                                                    <td><?php echo '<img src="data:image/jpeg;base64,' . base64_encode($data['product_image']) . '"width="150px" alt="">'?></td>
                                                     <td><?php echo $data['product_stock'];?></td>
                                                     <td><?php echo $data['product_category'];?></td>
                                                     <td><?php echo $data['product_price'];?></td>
