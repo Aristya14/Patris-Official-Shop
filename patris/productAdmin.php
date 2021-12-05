@@ -101,7 +101,7 @@ include 'connect.php'; ?>
                         </a>
                     </li>
                     <li>
-                        <a href="./notifications.php">
+                        <a href="ulasanAdmin.php">
                             <i>
                                 <img
                                     src="https://img.icons8.com/external-bearicons-glyph-bearicons/64/fa314a/external-positive-review-reputation-bearicons-glyph-bearicons.png" />

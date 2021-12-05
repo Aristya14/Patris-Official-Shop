@@ -88,19 +88,19 @@ include 'connect.php'; ?>
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li>
+                    <li  >
                         <a href="productAdmin.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/women-shoe-side-view.png" /></i>
                             <p>Produk</p>
                         </a>
                     </li>
-                    <li class="active" >
+                    <li>
                         <a href="pesananAdmin.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
                             <p>Pesanan</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active" >
                         <a href="ulasanAdmin.php">
                             <i>
                                 <img
@@ -151,47 +151,56 @@ include 'connect.php'; ?>
             </nav>
             <!-- End Navbar -->
             <div class="content">
-                
+                <div class="tombol">
+                    <a href="./addproductAdmin.php">
+                        <input type="submit" value="Add Product">
+                    </a>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card ">
                             <div class="card-header ">
-                                <h5 class="card-title">List Order</h5>
-                                <p class="card-category">All Order in Patris Official Shop</p>
+                                <h5 class="card-title">List Product</h5>
+                                <p class="card-category">All Product in Patris Official Shop</p>
                             </div>
                             <div class="card-body">
                                 <div style=" margin-left : 10px">
                                 <table style="width:900px ; margin-bottom:100px ; text-align: center;" border="1">
                                     <thead style="background-color:#F0628C;">
                                         <tr style="color: white" >
-                                            <!-- <th style="text-align:center;">ID</th> -->
-                                            <th>ID Order</th>
+                                            <th style="text-align:center;">ID</th>
+                                            <th>ID Product</th>
                                             <!-- <th>Gambar</th> -->
                                             
-                                            <th>Customer</th>
-                                            <th>Status</th>
-                                            <!-- <th>Harga</th> -->
-                                            <th>Tindakan</th>
+                                            <th>Order ID</th>
+                                            <th>Customer Name</th>
+                                            <th>Rating</th>
+                                            <th>Description</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                         <?php
-                                        $sql = "SELECT o.order_id , c.customer_name , o.order_status from orders o, customer c where o.customer_id=c.customer_id;";
+                                        $sql = "select r.review_id, r.product_id, r.order_id, c.customer_name, r.review_rating , r.review_desc from review r, orders o, customer c where r.order_id=o.order_id and o.customer_id=c.customer_id;";
                                         $query = mysqli_query($conn, $sql);
-                                            while ($data=mysqli_fetch_array($query)){   
-                                                echo "<tr>";                                                        
-                                                    echo "<td>".$data['order_id']."</td>";
-                                                    echo "<td>".$data['customer_name']."</td>";
-                                                    echo "<td>".$data['order_status']."</td>";
-                                                    // echo "<td>".$data['product_category']."</td>";
-                                                    // echo "<td>".$data['product_price']."</td>";
-                                                    echo "<td>";
-                                                        echo "<a href='detailPesananAdmin.php?id=".$data['order_id']."'> Detail</a>";
-                                                        // echo "<a href='removeProduct.php?id=".$data['order_id']."'>Hapus</a>";
-                                                    echo "</td>";
-                                                echo "</tr>"; 
-                                            }
+
+                                            while ($data=mysqli_fetch_array($query)){
+                                                ?>
+                                                <tr>                                                        
+                                                    <td><?php echo $data['review_id'];?></td>
+                                                    <td><?php echo $data['product_id'];?></td>
+                                                    <td><?php echo $data['order_id'];?></td>
+                                                    <td><?php echo $data['customer_name'];?></td>
+                                                    <td><?php echo $data['review_rating'];?></td>
+                                                    <td><?php echo $data['review_desc'];?></td>
+                                                     
+                                                     <!-- <td>
+                                                        <a href="editProduct.php?id=<?php echo $data['product_id']; ?>">Edit</a> |
+                                                        <a href="removeProduct.php?id=<?php echo $data['product_id']; ?>">Hapus</a>
+                                                    </td> -->
+                                            </tr> 
+                                                            <?php
+                                             }
                                              ?>
                                     </tbody>
                                 </table>

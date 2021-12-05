@@ -61,13 +61,13 @@ $order_date = mysqli_query($conn, "select order_date from `order` where order_st
             </a>
           </li>
           <li>
-            <a href="./map.php">
+            <a href="./pesananAdmin.php">
               <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
               <p>Pesanan</p>
             </a>
           </li>
           <li>
-            <a href="./notifications.php">
+            <a href="ulasanAdmin.php">
               <i>
                 <img
                   src="https://img.icons8.com/external-bearicons-glyph-bearicons/64/fa314a/external-positive-review-reputation-bearicons-glyph-bearicons.png" />
