@@ -12,9 +12,30 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
-
 <?php
-include 'connect.php'; ?>
+
+include("connect.php");
+session_start();
+// kalau tidak ada id di query string
+if( !isset($_SESSION['product_id']) ){
+    header('Location: productAdmin.php');
+}
+
+//ambil id dari query string
+$id = $_SESSION['product_id'];
+
+// buat query untuk ambil data dari database
+$sql = "SELECT*FROM product WHERE product_id=$id";
+$query = mysqli_query($conn, $sql);
+$data = mysqli_fetch_assoc($query);
+
+// jika data yang di-edit tidak ditemukan
+if( mysqli_num_rows($query) < 1 ){
+    die("data tidak ditemukan...");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,6 +72,17 @@ include 'connect.php'; ?>
         input[type=submit]:hover{
             opacity:0.9;
         }
+        .addproduct{
+          margin-top: 80px;
+        }
+        .logokecil{
+          width: auto;
+        }
+        .judul{
+            font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+            text-transform: capitalize;
+            font-size : 20px;
+        }
     </style>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport' />
@@ -63,6 +95,17 @@ include 'connect.php'; ?>
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="demo/demo.css" rel="stylesheet" />
     <link href="css/css.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/meanmenu.css">
+    <link rel="stylesheet" href="css/slick.css">
+    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 
 <body class="">
@@ -70,7 +113,7 @@ include 'connect.php'; ?>
         <div class="sidebar dashboard-color" data-color="white" data-active-color="danger">
             <div class="logo">
                 <a href="https://www.creative-tim.com" class="simple-text logo-mini">
-                    <div class="logo-image-small">
+                    <div class="">
                         <img src="produk/logo.png">
                     </div>
                 </a>
@@ -89,13 +132,13 @@ include 'connect.php'; ?>
                         </a>
                     </li>
                     <li  class="active" >
-                        <a href="productAdmin.php">
+                        <a href="./icons.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/women-shoe-side-view.png" /></i>
                             <p>Produk</p>
                         </a>
                     </li>
                     <li>
-                        <a href="pesananAdmin.php">
+                        <a href="./map.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
                             <p>Pesanan</p>
                         </a>
@@ -130,7 +173,7 @@ include 'connect.php'; ?>
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="javascript:;">Patris Official Shop ~ Admin</a>
+                        <a class="judul" href="javascript:;">Patris Official Shop ~ Admin</a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
                         aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -150,66 +193,88 @@ include 'connect.php'; ?>
                 </div>
             </nav>
             <!-- End Navbar -->
-            <div class="content">
-                <div class="tombol">
-                    <a href="./addproductAdmin.php">
-                        <input type="submit" value="Add Product">
-                    </a>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card ">
-                            <div class="card-header ">
-                                <h5 class="card-title">List Product</h5>
-                                <p class="card-category">All Product in Patris Official Shop</p>
-                            </div>
-                            <div class="card-body">
-                                <div style=" margin-left : 10px">
-                                <table style="width:900px ; margin-bottom:100px ; text-align: center;" border="1">
-                                    <thead style="background-color:#F0628C;">
-                                        <tr style="color: white" >
-                                            <th style="text-align:center;">ID</th>
-                                            <th>Nama Product</th>
-                                            <!-- <th>Gambar</th> -->
-                                            
-                                            <th>Stok</th>
-                                            <th>Kategori</th>
-                                            <th>Harga</th>
-                                            <th>Tindakan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <?php
-                                        $sql = "SELECT * FROM product";
-                                        $query = mysqli_query($conn, $sql);
-
-                                            while ($data=mysqli_fetch_array($query)){
-                                                ?>
-                                                <tr>                                                        
-                                                    <td><?php echo $data['product_id'];?></td>
-                                                    <td><?php echo $data['product_name'];?></td>
-                                                    <td><?php echo $data['product_stock'];?></td>
-                                                    <td><?php echo $data['product_category'];?></td>
-                                                    <td><?php echo $data['product_price'];?></td>
-                                                     
-                                                     <td>
-                                                        <a href="editProduct.php?id=<?php echo $data['product_id']; ?>">Edit</a> |
-                                                        <a href="removeProduct.php?id=<?php echo $data['product_id']; ?>">Hapus</a>
-                                                    </td>
-                                            </tr> 
-                                                            <?php
-                                             }
-                                             ?>
-                                    </tbody>
-                                </table>
-                        </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <section class="checkout-area pb-70">
+              <div class="container">
+                  <form action="proses-editproduct.php" method="POST">
+                      <fieldset>
+                          <input type="hidden" name="product_id" value="<?php echo $data['product_id'] ?>" />
+                          
+                      <div class="row addproduct">
+                          <div class="col-lg-6">
+                              <div class="checkbox-form">
+                                <h3>Edit Data Product</h3>
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <div class="checkout-form-list" style="padding-top:10px;">
+                                              <label for="product_name">Product Name <span class="required">*</span></label>
+                                              <input type="text" name="product_name" value="<?php echo $data['product_name'] ?>"  />
+                                          </div>
+                                      </div>
+                                      
+                                      <div class="col-md-12">
+                                          <div class="checkout-form-list">
+                                              <label for="product_image">Product Image</label>
+                                              <input type="file" name="product_image" value="<?php echo $data['product_image'] ?>" />
+                                          </div>
+                                      </div>
+                                      <div class="col-md-12">
+                                          <div class="checkout-form-list">
+                                              <label for="product_desc">Description <span class="required">*</span></label>
+                                              <input type="text" name="product_desc" value="<?php echo $data['product_desc'] ?>" />
+                                          </div>
+                                      </div>
+                                      
+                                      <div class="col-md-12">
+                                          <div class="checkout-form-list">
+                                              <label for="product_stock">Stock Product <span class="required">*</span></label>
+                                              <input type="text" name="product_stock" value="<?php echo $data['product_stock'] ?>" />
+                                          </div>
+                                      </div>
+                                  </div>
+  
+                              </div>
+                          </div>
+                          <div class="col-lg-6">
+                              <!-- <div class="your-order mb-30 "> -->
+                                  <div class="your-order-table table-responsive">
+                                      <div class="col-md-12">
+                                          <div class="checkout-form-list" style="padding-top:70px;">
+                                              <label for="product_category">Category <span class="required">*</span></label>
+                                              <input type="text" name="product_category" value="<?php echo $data['product_category'] ?>"/>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-12">
+                                          <div class="checkout-form-list" style="padding-top:70px;">
+                                              <label for="product_price">Price (Rupiah) <span class="required">*</span></label>
+                                              <input type="text" name="product_price" value="<?php echo $data['product_price'] ?>" />
+                                          </div>
+                                      </div>
+                                      <div class="col-md-12">
+                                          <div class="checkout-form-list">
+                                              <label for="product_size">Size <span class="required">*</span></label>
+                                              <input type="text" name="product_size" value="<?php echo $data['product_size'] ?>" />
+                                          </div>
+                                      </div>
+                                      <div class="col-md-12">
+                                          <div class="checkout-form-list">
+                                              <label for="product_weight">Weight (Gram) <span class="required">*</span></label>
+                                              <input type="text" name="product_weight" value="<?php echo $data['product_weight'] ?>"/>
+                                          </div>
+                                      </div>
+                                      
+                                  </div>
+                                      <div class="order-button-payment mt-20" style="padding-top:100px;" >
+                                          <input type="submit" value="simpan" name="simpan" class="btn theme-btn" />
+                                      </div>
+                                  </div>
+                              <!-- </div> -->
+                          </div>
+                      </div>
+    </fieldset>
+                  </form>
+              </div>
+          </section>
+          
             
         </div>
     </div>

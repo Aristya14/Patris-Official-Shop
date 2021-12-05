@@ -71,7 +71,7 @@ Coded by www.creative-tim.com
             </a>
           </li>
           <li>
-            <a href="./map.php">
+            <a href="pesananAdmin.php">
               <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
               <p>Pesanan</p>
             </a>

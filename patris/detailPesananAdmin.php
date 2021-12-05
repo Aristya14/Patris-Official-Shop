@@ -12,9 +12,11 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
-
 <?php
-include 'connect.php'; ?>
+
+include 'connect.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,7 +97,7 @@ include 'connect.php'; ?>
                         </a>
                     </li>
                     <li>
-                        <a href="pesananAdmin.php">
+                        <a href="./map.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
                             <p>Pesanan</p>
                         </a>
@@ -151,58 +153,56 @@ include 'connect.php'; ?>
             </nav>
             <!-- End Navbar -->
             <div class="content">
-                <div class="tombol">
-                    <a href="./addproductAdmin.php">
-                        <input type="submit" value="Add Product">
-                    </a>
-                </div>
+                
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card ">
                             <div class="card-header ">
-                                <h5 class="card-title">List Product</h5>
-                                <p class="card-category">All Product in Patris Official Shop</p>
+                                <h5 class="card-title">List Order</h5>
+                                <p class="card-category">All Order in Patris Official Shop</p>
                             </div>
                             <div class="card-body">
                                 <div style=" margin-left : 10px">
+                                <table style="width:500px ; margin-bottom:100px ;" border="1">
+                                <tr>
+                                    <td style="background-color:#F0628C; color: white;">Penerima</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color:#F0628C; color: white;">Provinsi</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color:#F0628C; color: white;">Kota</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color:#F0628C; color: white;">Alamat</td>
+                                    <td></td>
+                                </tr>
+                                </table>
+
                                 <table style="width:900px ; margin-bottom:100px ; text-align: center;" border="1">
-                                    <thead style="background-color:#F0628C;">
+                                        <thead style="background-color:#F0628C;">
                                         <tr style="color: white" >
-                                            <th style="text-align:center;">ID</th>
-                                            <th>Nama Product</th>
+                                            <!-- <th style="text-align:center;">ID</th> -->
+                                            <th>ID Product</th>
                                             <!-- <th>Gambar</th> -->
                                             
-                                            <th>Stok</th>
-                                            <th>Kategori</th>
+                                            <th>Quantity</th>
+                                            <!-- <th>Status</th>
                                             <th>Harga</th>
-                                            <th>Tindakan</th>
+                                            <th>Tindakan</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <td></td>
+                                        <td></td>
+                                        
 
-                                        <?php
-                                        $sql = "SELECT * FROM product";
-                                        $query = mysqli_query($conn, $sql);
-
-                                            while ($data=mysqli_fetch_array($query)){
-                                                ?>
-                                                <tr>                                                        
-                                                    <td><?php echo $data['product_id'];?></td>
-                                                    <td><?php echo $data['product_name'];?></td>
-                                                    <td><?php echo $data['product_stock'];?></td>
-                                                    <td><?php echo $data['product_category'];?></td>
-                                                    <td><?php echo $data['product_price'];?></td>
-                                                     
-                                                     <td>
-                                                        <a href="editProduct.php?id=<?php echo $data['product_id']; ?>">Edit</a> |
-                                                        <a href="removeProduct.php?id=<?php echo $data['product_id']; ?>">Hapus</a>
-                                                    </td>
-                                            </tr> 
-                                                            <?php
-                                             }
-                                             ?>
                                     </tbody>
                                 </table>
+
                         </div>
                             </div>
                             
