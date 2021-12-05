@@ -17,20 +17,20 @@ Coded by www.creative-tim.com
 include("connect.php");
 session_start();
 // kalau tidak ada id di query string
-if( !isset($_SESSION['product_id']) ){
+if (!isset($_GET['id'])) {
     header('Location: productAdmin.php');
 }
 
 //ambil id dari query string
-$id = $_SESSION['product_id'];
+$id = $_GET['id'];
 
 // buat query untuk ambil data dari database
-$sql = "SELECT*FROM product WHERE product_id=$id";
+$sql = "SELECT * FROM product WHERE product_id=$id";
 $query = mysqli_query($conn, $sql);
 $data = mysqli_fetch_assoc($query);
 
 // jika data yang di-edit tidak ditemukan
-if( mysqli_num_rows($query) < 1 ){
+if (mysqli_num_rows($query) < 1) {
     die("data tidak ditemukan...");
 }
 
@@ -53,7 +53,7 @@ if( mysqli_num_rows($query) < 1 ){
             background-color: coral;
         }
 
-        input[type=submit]{
+        input[type=submit] {
             font-family: sans-serif;
             font-size: 15px;
             background: #F0628C;
@@ -62,30 +62,34 @@ if( mysqli_num_rows($query) < 1 ){
             border-radius: 5px;
             padding: 12px 20px;
             margin-top: 10px;
-         }
+        }
+
         .tombol {
-           margin-top: 60px;
-           margin-bottom: 30px;
-           margin-right: 20px;
-           text-align: right;
+            margin-top: 60px;
+            margin-bottom: 30px;
+            margin-right: 20px;
+            text-align: right;
         }
-        input[type=submit]:hover{
-            opacity:0.9;
+
+        input[type=submit]:hover {
+            opacity: 0.9;
         }
-        .addproduct{
-          margin-top: 80px;
+
+        .addproduct {
+            margin-top: 80px;
         }
-        .logokecil{
-          width: auto;
+
+        .logokecil {
+            width: auto;
         }
-        .judul{
+
+        .judul {
             font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
             text-transform: capitalize;
-            font-size : 20px;
+            font-size: 20px;
         }
     </style>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-        name='viewport' />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -126,12 +130,11 @@ if( mysqli_num_rows($query) < 1 ){
                     <li>
                         <a href="./dashboard.php">
                             <i>
-                                <img
-                                    src="https://img.icons8.com/material-outlined/24/fa314a/dashboard-layout.png" /></i>
+                                <img src="https://img.icons8.com/material-outlined/24/fa314a/dashboard-layout.png" /></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li  class="active" >
+                    <li class="active">
                         <a href="./icons.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/women-shoe-side-view.png" /></i>
                             <p>Produk</p>
@@ -146,8 +149,7 @@ if( mysqli_num_rows($query) < 1 ){
                     <li>
                         <a href="./notifications.php">
                             <i>
-                                <img
-                                    src="https://img.icons8.com/external-bearicons-glyph-bearicons/64/fa314a/external-positive-review-reputation-bearicons-glyph-bearicons.png" />
+                                <img src="https://img.icons8.com/external-bearicons-glyph-bearicons/64/fa314a/external-positive-review-reputation-bearicons-glyph-bearicons.png" />
                             </i>
                             <p>Ulasan</p>
                         </a>
@@ -175,8 +177,7 @@ if( mysqli_num_rows($query) < 1 ){
                         </div>
                         <a class="judul" href="javascript:;">Patris Official Shop ~ Admin</a>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-                        aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -194,89 +195,85 @@ if( mysqli_num_rows($query) < 1 ){
             </nav>
             <!-- End Navbar -->
             <section class="checkout-area pb-70">
-              <div class="container">
-                  <form action="proses-editproduct.php" method="POST">
-                      <fieldset>
-                          <input type="hidden" name="product_id" value="<?php echo $data['product_id'] ?>" />
-                          
-                      <div class="row addproduct">
-                          <div class="col-lg-6">
-                              <div class="checkbox-form">
-                                <h3>Edit Data Product</h3>
-                                  <div class="row">
-                                      <div class="col-md-12">
-                                          <div class="checkout-form-list" style="padding-top:10px;">
-                                              <label for="product_name">Product Name <span class="required">*</span></label>
-                                              <input type="text" name="product_name" value="<?php echo $data['product_name'] ?>"  />
-                                          </div>
-                                      </div>
-                                      
-                                      <div class="col-md-12">
-                                          <div class="checkout-form-list">
-                                              <label for="product_image">Product Image</label>
-                                              <input type="file" name="product_image" value="<?php echo $data['product_image'] ?>" />
-                                          </div>
-                                      </div>
-                                      <div class="col-md-12">
-                                          <div class="checkout-form-list">
-                                              <label for="product_desc">Description <span class="required">*</span></label>
-                                              <input type="text" name="product_desc" value="<?php echo $data['product_desc'] ?>" />
-                                          </div>
-                                      </div>
-                                      
-                                      <div class="col-md-12">
-                                          <div class="checkout-form-list">
-                                              <label for="product_stock">Stock Product <span class="required">*</span></label>
-                                              <input type="text" name="product_stock" value="<?php echo $data['product_stock'] ?>" />
-                                          </div>
-                                      </div>
-                                  </div>
-  
-                              </div>
-                          </div>
-                          <div class="col-lg-6">
-                              <!-- <div class="your-order mb-30 "> -->
-                                  <div class="your-order-table table-responsive">
-                                      <div class="col-md-12">
-                                          <div class="checkout-form-list" style="padding-top:70px;">
-                                              <label for="product_category">Category <span class="required">*</span></label>
-                                              <input type="text" name="product_category" value="<?php echo $data['product_category'] ?>"/>
-                                          </div>
-                                      </div>
-                                      <div class="col-md-12">
-                                          <div class="checkout-form-list" style="padding-top:70px;">
-                                              <label for="product_price">Price (Rupiah) <span class="required">*</span></label>
-                                              <input type="text" name="product_price" value="<?php echo $data['product_price'] ?>" />
-                                          </div>
-                                      </div>
-                                      <div class="col-md-12">
-                                          <div class="checkout-form-list">
-                                              <label for="product_size">Size <span class="required">*</span></label>
-                                              <input type="text" name="product_size" value="<?php echo $data['product_size'] ?>" />
-                                          </div>
-                                      </div>
-                                      <div class="col-md-12">
-                                          <div class="checkout-form-list">
-                                              <label for="product_weight">Weight (Gram) <span class="required">*</span></label>
-                                              <input type="text" name="product_weight" value="<?php echo $data['product_weight'] ?>"/>
-                                          </div>
-                                      </div>
-                                      
-                                  </div>
-                                      <div class="order-button-payment mt-20" style="padding-top:100px;" >
-                                          <input type="submit" value="simpan" name="simpan" class="btn theme-btn" />
-                                      </div>
-                                  </div>
-                              <!-- </div> -->
-                          </div>
-                      </div>
-    </fieldset>
-                  </form>
-              </div>
-          </section>
-          
-            
+                <div class="container">
+                    <form action="proses-editproduct.php" method="POST">
+                        <fieldset>
+                            <input type="hidden" name="product_id" value="<?php echo $data['product_id'] ?>" />
+
+                            <div class="row addproduct">
+                                <div class="col-lg-6">
+                                    <!-- <div class="checkbox-form"> -->
+                                    <h3>Edit Data Product</h3>
+                                    <!-- <div class="row"> -->
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list" style="padding-top:10px;">
+                                            <label for="product_name">Product Name <span class="required">*</span></label>
+                                            <input type="text" name="product_name" value="<?php echo $data['product_name'] ?>" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label for="product_image">Product Image</label>
+                                            <input type="file" name="product_image" value="<?php //echo $data['product_image'] 
+                                                                                            ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label for="product_desc">Description <span class="required">*</span></label>
+                                            <textarea type="text" rows="4" cols="59" name="product_desc"><?php echo $data['product_desc'] ?> </textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- </div> -->
+
+                                    <!-- </div> -->
+                                </div>
+                                <div class="col-lg-6">
+                                    <!-- <div class="your-order mb-30 "> -->
+                                    <!-- <div class="your-order-table table-responsive"> -->
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list" style="padding-top:70px;">
+                                            <label for="product_stock">Stock Product <span class="required">*</span></label>
+                                            <input type="text" name="product_stock" value="<?php echo $data['product_stock'] ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label for="product_category">Category <span class="required">*</span></label>
+                                            <input type="text" name="product_category" value="<?php echo $data['product_category'] ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label for="product_price">Price (Rupiah) <span class="required">*</span></label>
+                                            <input type="text" name="product_price" value="<?php echo $data['product_price'] ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label for="product_size">Size <span class="required">*</span></label>
+                                            <input type="text" name="product_size" value="<?php echo $data['product_size'] ?>" />
+                                        </div>
+                                    </div>
+
+                                    <!-- </div> -->
+                                    <div class="order-button-payment" style="padding-top:100px;">
+                                        <input type="submit" value="simpan" name="simpan" class="btn theme-btn" />
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                </div>
+                </fieldset>
+                </form>
         </div>
+        </section>
+
+
+    </div>
     </div>
     <!--   Core JS Files   -->
     <script src="../assets/js/core/jquery.min.js"></script>
@@ -294,7 +291,7 @@ if( mysqli_num_rows($query) < 1 ){
     <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
     <script src="../assets/demo/demo.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
             demo.initChartsPages();
         });
