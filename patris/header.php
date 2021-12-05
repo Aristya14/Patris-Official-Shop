@@ -37,7 +37,7 @@ if (isset($_POST['submitsearch'])) {
                     <div class="header-nav">
                         <nav>
                             <ul>
-                                <li><a <?php if (strpos($_SERVER['REQUEST_URI'], "index") !== false) {
+                                <li><a <?php if (strpos($_SERVER['REQUEST_URI'], "index.php") != false) {
                                             echo 'class="active"';
                                         } ?> href="index.php"><span style="font-size: 15px; margin-right: 20px;margin-left: 15px;">Home</span></a>
                                 </li>
@@ -51,7 +51,7 @@ if (isset($_POST['submitsearch'])) {
                                         ?>
                                     </ul>
                                 </li>
-                                <li><a <?php if (strpos($_SERVER['REQUEST_URI'], "contact") !== false) {
+                                <li><a <?php if (strpos($_SERVER['REQUEST_URI'], "contact.php") != false) {
                                             echo 'class="active"';
                                         } ?> href="contact.php"><span style="font-size: 15px;margin-right: 20px;">Contact</span></a></li>
                             </ul>
