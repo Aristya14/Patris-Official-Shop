@@ -646,7 +646,8 @@ header.header ul.white-content > li > a {
 /* logo */
 
 .logo img {
-  max-width: 35px;
+  max-width: 120px;
+  transform: translateY(-8px);
 }
 
 header.header ul li {
@@ -2266,8 +2267,6 @@ ul.color-list li:hover {
   line-height: 25px;
   font-weight: 400;
 }
-.widget .category-list ul {
-}
 .widget .category-list ul li {
   display: inline-block;
 }
@@ -3289,9 +3288,9 @@ div#accordionExample > div{
 .product-content ul li,
 p.simple-text {
   color: #666;
-  font-size: 14.98px;
+  font-size: 22px;
   margin-bottom: 25px;
-  line-height: 26.964px;
+  line-height: 36.964px;
   font-weight: 300;
 }
 
@@ -3578,10 +3577,6 @@ a.price-calculate{
   color: #3C3232;
   margin-bottom: 3px;
 }
-a.price-calculate:hover{
-  color: #eb2323;
-  text-decoration: underline;
-}
 .cart-select{
   position: relative;
   width: 90%;
@@ -3608,14 +3603,12 @@ a.price-calculate:hover{
   margin: 3px 0;
 }
 .cart-widget input{
-  height: 55px;
-    width: 90%;
     border: 1px solid #ddd;
     padding-left: 10px;
     color: #666;
 }
 .calculate-shipping-box{
-  display: none;
+  display: block;
 }
 .cart-widget tr{
   border-bottom: .3px solid #EBEBEB;

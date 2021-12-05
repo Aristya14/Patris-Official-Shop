@@ -8,10 +8,95 @@ session_start();
 
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
+} else {
+    $user = $_SESSION['username'];
+}
+$sql = "SELECT * FROM customer cs, cart c, product p where cs.customer_id=c.customer_id and c.product_id=p.product_id and cs.customer_username='$user'";
+$result = mysqli_query($conn, $sql);
+$num = $result->num_rows;
+
+if ($num) {
+    $sql2 = "SELECT sum(c.quantity*p.product_price) as sumprice FROM customer cs, cart c, product p where cs.customer_id=c.customer_id and c.product_id=p.product_id and cs.customer_username='$user'";
+    $result2 = mysqli_query($conn, $sql2);
+    $row2 = mysqli_fetch_assoc($result2);
 }
 
-else {
-    $user = $_SESSION['username'];
+if (isset($_POST['deletecart'])) {
+    $cid = $_POST['cid'];
+    $pid = $_POST['pid'];
+
+    $sql3 = "DELETE FROM cart where customer_id = '$cid' and product_id = '$pid'";
+    $result3 = mysqli_query($conn, $sql3);
+    if ($result3) {
+        header("Location: cart.php");
+    } else {
+        echo "<script>alert('Something is wrong.')</script>";
+    }
+}
+
+if (isset($_POST['updateqty'])) {
+    $qty = $_POST['updateqty'];
+    $pid2 = $_POST['pid2'];
+    $cid2 = $_POST['cid2'];
+    $stock = $_POST['stock'];
+    $pname = $_POST['pname'];
+
+    if ($qty > $stock) {
+        echo "<script>alert('" . $pname . " only have " . $stock . " on stock')</script>";
+    } else {
+
+        $sql4 = "UPDATE cart set quantity = '$qty' where customer_id = '$cid2' and product_id = '$pid2'";
+        $result4 = mysqli_query($conn, $sql4);
+        if ($result4) {
+            header("Location: cart.php");
+        } else {
+            echo "<script>alert('Something is wrong.')</script>";
+        }
+    }
+}
+
+if (isset($_POST['updateprov'])) {
+    $prov = explode('|', $_POST['updateprov']);
+    $provid = $prov[0];
+    $provname = $prov[1];
+}
+
+if (isset($_POST['updatecity'])) {
+    $prov = explode('|', $_POST['prov']);
+    $provid = $prov[0];
+    $provname = $prov[1];
+    $city = explode('|', $_POST['updatecity']);
+    $cityid = $city[0];
+    $cityname = $city[1];
+}
+
+if (isset($_POST['ship'])) {
+    $prov = explode('|', $_POST['prov']);
+    $provid = $prov[0];
+    $provname = $prov[1];
+    $city = explode('|', $_POST['city']);
+    $cityid = $city[0];
+    $cityname = $city[1];
+    $ship = $_POST['ship'];
+    $cour = $_POST['cour'];
+    $serv = $_POST['serv'];
+}
+
+if (isset($_POST['proceed'])) {
+    $ship = $_POST['ship'];
+    if ($ship) {
+        $prov = $_POST['prov'];
+        $city = $_POST['city'];
+        $_SESSION['city'] = $city;
+        $_SESSION['province'] = $prov;
+        $_SESSION['courier'] = $cour;
+        $_SESSION['service'] = $serv;
+        $_SESSION['shipprice'] = $ship;
+
+        header("Location: checkout.php");
+    } else {
+        echo "<script>alert('Please Choose Shipping First !!')</script>";
+    }
 }
 
 ?>
@@ -25,12 +110,10 @@ else {
     <title>Patris Official Shop</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="produk/logo.png">
-    <!-- Place favicon.ico in the root directory -->
 
-    <!-- CSS here -->
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
+
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/fontawesome.min.css">
@@ -46,284 +129,28 @@ else {
 </head>
 
 <body>
-    <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-
-    <!-- preloader -->
-    <div id="loader-wrapper">
-        <div id="loader"></div>
-    </div>
-
-
-
-    <!-- header section start -->
-    <header class="header pt-30 pb-30  header-sticky header-static"
-        style="padding-top: 30px; padding-bottom: 15px; top: 0px;">
-        <div class="container-fluid">
-            <div class="header-nav position-relative">
-                <div class="row align-items-center">
-    
-    
-                    <div class="col-xl-5 col-lg-6 hidden-md position-static">
-                        <div class="header-nav">
-                            <nav>
-                                <ul>
-                                    <li><a href="index.php"><span
-                                                style="font-size: 15px; margin-right: 20px;margin-left: 15px;">Home</span></a>
-                                    </li>
-                                    <li class="position-static"><a href="shop.php"><span
-                                                style="font-size: 15px;margin-right: 20px;">Shop</span></a></li>
-                                    <li><a href="contact.php"><span
-                                                style="font-size: 15px;margin-right: 20px;">Contact</span></a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-3">
-                        <div class="logo">
-                            <a href="index.php"><img src="produk/logo2.png" alt=""></a>
-                        </div>
-                    </div>
-    
-                    <div class="col-xl-4 col-lg-3 col-6 col-md-6 col-sm-6 col-9">
-                        <div class="header-right" style="font-size: 15px; margin-right: 20px;margin-left: 15px;">
-                            <ul class="text-right">
-                            <li><a href="
-                                <?php
-                                if (isset($_SESSION['username'])) {
-                                    echo "account.php";
-                                } else {
-                                    echo "login.php";
-                                }
-                                ?>
-                                " class="account"><i class="fal fa-user-friends"></i>
-                                        <article class="account-registar d-inline-block">
-                                            <?php
-                                            if (isset($_SESSION['username'])) {
-                                                echo $user;
-                                            } else {
-                                                echo "Login/Sign Up";
-                                            }
-                                            ?>
-                                        </article>
-                                    </a></li>
-                                <li><a href="javascript:void(0)"><i class="fal fa-search"></i></a>
-    
-                                    <!-- search popup -->
-                                    <div id="search-popup">
-                                        <div class="close-search-popup">
-                                            <i class="fal fa-times"></i>
-                                        </div>
-                                        <div class="search-popup-inner mt-135">
-                                            <div class="search-title text-center">
-                                                <h2>Search</h2>
-                                            </div>
-    
-                                            <div class="search-content pt-55">
-                                                <ul class="text-center">
-                                                    <li><a href="javascript:void(0)" class="active">All categories</a></li>
-                                                    <li><a href="javascript:void(0)">Sepatu</a></li>
-                                                    <li><a href="javascript:void(0)">Wedges</a></li>
-                                                    <li><a href="javascript:void(0)">Sandal</a></li>
-                                                    <li><a href="javascript:void(0)">Sepatu-Sandal</a></li>
-                                                </ul>
-    
-                                                <div class="search-form mt-35">
-                                                    <form action="#" method="post">
-                                                        <input type="text" placeholder="Search Products...">
-                                                        <button type="submit"><i class="fal fa-search"></i></button>
-                                                    </form>
-                                                </div>
-    
-                                                <div class="search-result-list">
-                                                    <ul class="text-left">
-                                                        <li class="d-block d-flex align-items-center">
-                                                            <div class="search-result-img">
-                                                                <img src="img/product/1.jpg" class="w-100" alt="">
-                                                            </div>
-                                                            <div class="search-result-desc pl-10">
-                                                                <a href="single-product.php" class="title px-0">ELLE -
-                                                                    Recliner syntheti chair</a>
-                                                                <div class="price">$<span>399</span></div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-block d-flex align-items-center">
-                                                            <div class="search-result-img">
-                                                                <img src="img/product/2.jpg" class="w-100" alt="">
-                                                            </div>
-                                                            <div class="search-result-desc pl-10">
-                                                                <a href="single-product.php" class="title px-0">RIMINI -
-                                                                    Folding leather deck chair</a>
-                                                                <div class="price">$<span>399</span></div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-block d-flex align-items-center">
-                                                            <div class="search-result-img">
-                                                                <img src="img/product/3.jpg" class="w-100" alt="">
-                                                            </div>
-                                                            <div class="search-result-desc pl-10">
-                                                                <a href="single-product.php" class="title px-0">LANDSCAPE
-                                                                    - Folding fabric deck chair</a>
-                                                                <div class="price">$<span>399</span></div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-block d-flex align-items-center">
-                                                            <div class="search-result-img">
-                                                                <img src="img/product/1.jpg" class="w-100" alt="">
-                                                            </div>
-                                                            <div class="search-result-desc pl-10">
-                                                                <a href="single-product.php" class="title px-0">ELLE -
-                                                                    Recliner syntheti chair</a>
-                                                                <div class="price">$<span>399</span></div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-block d-flex align-items-center">
-                                                            <div class="search-result-img">
-                                                                <img src="img/product/2.jpg" class="w-100" alt="">
-                                                            </div>
-                                                            <div class="search-result-desc pl-10">
-                                                                <a href="single-product.php" class="title px-0">RIMINI -
-                                                                    Folding leather deck chair</a>
-                                                                <div class="price">$<span>399</span></div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-block d-flex align-items-center">
-                                                            <div class="search-result-img">
-                                                                <img src="img/product/3.jpg" class="w-100" alt="">
-                                                            </div>
-                                                            <div class="search-result-desc pl-10">
-                                                                <a href="single-product.php" class="title px-0">LANDSCAPE
-                                                                    - Folding fabric deck chair</a>
-                                                                <div class="price">$<span>399</span></div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-    
-    
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="cart.php"><i class="fal fa-shopping-bag"><span>5</span></i></a>
-                                    <div class="minicart">
-                                        <div class="minicart-body">
-                                            <div class="minicart-content">
-                                                <ul class="text-left">
-                                                    <li>
-                                                        <div class="minicart-img">
-                                                            <a href="single-product.php" class="p-0"><img
-                                                                    src="img/product/1.jpg" class="w-100" alt=""></a>
-                                                        </div>
-                                                        <div class="minicart-desc">
-                                                            <a href="single-product.php" class="p-0">Capitalize on low
-                                                                hanging fruit t</a>
-                                                            <strong>1 × $250.00</strong>
-                                                        </div>
-                                                        <div class="remove">
-                                                            <i class="fal fa-times"></i>
-                                                        </div>
-                                                    </li>
-    
-                                                    <li>
-                                                        <div class="minicart-img">
-                                                            <a href="single-product.php" class="p-0"><img
-                                                                    src="img/product/2.jpg" class="w-100" alt=""></a>
-                                                        </div>
-                                                        <div class="minicart-desc">
-                                                            <a href="single-product.php" class="p-0">Leather Courriere
-                                                                duffle ba</a>
-                                                            <strong>1 × $150.00</strong>
-                                                        </div>
-                                                        <div class="remove">
-                                                            <i class="fal fa-times"></i>
-                                                        </div>
-                                                    </li>
-    
-    
-                                                    <li>
-                                                        <div class="minicart-img">
-                                                            <a href="single-product.php" class="p-0"><img
-                                                                    src="img/product/3.jpg" class="w-100" alt=""></a>
-                                                        </div>
-                                                        <div class="minicart-desc">
-                                                            <a href="single-product.php" class="p-0">Party Supplies
-                                                                Around Cupcake</a>
-                                                            <strong>1 × $150.00</strong>
-                                                        </div>
-                                                        <div class="remove">
-                                                            <i class="fal fa-times"></i>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="minicart-checkout">
-                                            <div class="minicart-checkout-heading mt-8 mb-25 overflow-hidden">
-                                                <strong class="float-left">Subtotal:</strong>
-                                                <span class="price float-right">503.00</span>
-                                            </div>
-                                            <div class="minicart-checkout-links">
-                                                <a href="cart.php"
-                                                    class="generic-btn black-hover-btn text-uppercase w-100 mb-20">View
-                                                    cart</a>
-                                                <a href="checkout.php"
-                                                    class="generic-btn black-hover-btn text-uppercase w-100 mb-20">Checkout</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="javascript:void(0)"><i class="fal fa-align-right"></i></a>
-                                    <ul class="submenu bold-content text-right">
-                                        <li><a href="account.php">My Account</a></li>
-                                        <li><a href="checkout.php">Checkout</a></li>
-                                        <li><a href="shop.php">Shop</a></li>
-                                        <li><a href="order.php">My Order</a></li>
-                                        <li><a href="logout.php">Logout</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mobile-menu visible-sm">
-                <div id="mobile-menu">
-                    <ul>
-                        <li><a class="pl-3" href="javascript:void(0)" href="index.php">Home</a></li>
-                        <li><a class="pl-3" href="javascript:void(0)" href="shop.php">Shop</a></li>
-                        <li><a href="contact.php">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- /. mobile nav -->
-        </div>
-    </header>
-    <!-- header section end -->
-
-
-
-    <!-- shop body section start -->
+    <?php include 'header.php'; ?>
     <section class="cart-body mb-90 gray-border-top pt-35">
         <div class="has-breadcrumb-content">
             <div class="container container-1430">
                 <div class="breadcrumb-content" style="flex-direction: column;">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb p-0 m-0">
-                            <li class="breadcrumb-item"><a href="index2.php">Home</a></li>
+                            <li class="breadcrumb-item">Home</li>
                             <li class="breadcrumb-item active" aria-current="page">Cart</li>
                         </ol>
                     </nav>
-                 <h2 class="cart-title mt-40">Cart</h2>
+                    <h2 class="cart-title mt-40 mb-40"><?php if ($num) {
+                                                            echo "Cart";
+                                                        } else {
+                                                            echo "You have no items in your cart";
+                                                        } ?></h2>
                 </div>
-
-                <div class="cart-body-content">
-                    <div class="row">
-                        <div class="col-xl-8">
-                            
-                            <div class="product-content">
-                                <form action="#">
+                <?php if ($num) { ?>
+                    <div class="cart-body-content">
+                        <div class="row">
+                            <div class="col-xl-7">
+                                <div class="product-content">
                                     <div class="table-responsive">
                                         <table class="table table-2">
                                             <thead>
@@ -337,360 +164,232 @@ else {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <button class="close-btn"><i class="fal fa-times"></i></button>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <img src="img/product/1.jpg" width="80" alt="">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <h6><a href="single-product.php" class="title">Blandit vel eros condimentum ulla</a></h6>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <span class="price">$90.00</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                                    <input type="number" value="1" style="margin-right: 20px; width: 119px;">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <span class="total">$90.00</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <button class="close-btn"><i class="fal fa-times"></i></button>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <img src="img/product/2.jpg" width="80" alt="">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <h6><a href="single-product.php" class="title">Blossom Porcelain Side Plates</a></h6>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <span class="price">$90.00</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                                    <input type="number" value="1" style="margin-right: 20px; width: 119px;">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data">
-                                                            <span class="total">$90.00</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="table-data">
+                                                                <form method="POST">
+                                                                    <input id="cid" name="cid" type="hidden" value="<?php echo $row['customer_id']; ?>">
+                                                                    <input id="pid" name="pid" type="hidden" value="<?php echo $row['product_id']; ?>">
+                                                                    <button name="deletecart" class="close-btn"><i class="fal fa-times"></i></button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="table-data">
+                                                                <img src="data:image/jpeg;base64,<?php echo base64_encode($row['product_image']); ?>" width="80" alt="">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="table-data">
+                                                                <h6><a href="single-product.php" class="title"><?php echo $row['product_name']; ?></a>
+                                                                </h6>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="table-data">
+                                                                <span class="price">Rp.
+                                                                    <?php echo number_format($row['product_price']); ?></span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="table-data">
+                                                                <form method="POST">
+                                                                    <input id="pname" name="pname" type="hidden" value="<?php echo $row['product_name']; ?>">
+                                                                    <input id="stock" name="stock" type="hidden" value="<?php echo $row['product_stock']; ?>">
+                                                                    <input id="cid2" name="cid2" type="hidden" value="<?php echo $row['customer_id']; ?>">
+                                                                    <input id="pid2" name="pid2" type="hidden" value="<?php echo $row['product_id']; ?>">
+                                                                    <input name="updateqty" onchange="this.form.submit()" type="number" value="<?php echo $row['quantity']; ?>" min="1" max="<?php echo $row['product_stock']; ?>" style="margin-right: 20px; width: 119px;">
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="table-data">
+                                                                <span class="total">Rp.
+                                                                    <?php echo number_format($row['product_price'] * $row['quantity']); ?></span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="cupon">
-                                            <form action="#" method="POST">
-                                                <input type="text" placeholder="Cupon code" class="text-left pl-3" style="margin-right: 20px; width: 119px;">
-                                                <button class="generic-btn border-0 red-hover-btn text-uppercase">Apply Cupon</button>
-                                                <button class="generic-btn border-0 red-hover-btn text-uppercase float-right">Update Cart</button>
-                                            </form>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xl-4">
-                            <div class="cart-widget">
-                                <h4 class="title">Cart Totals</h4>
-                                <table class="table table-2 no-border">
-                                    <tbody>
-                                        <tr>
-                                            <th>Subtotal</th>
-                                            <td>$134.00</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Shipping</th>
-                                            <td>
-                                                <h6>Flat rate</h6>
-                                                <p>Shipping options will be updated during checkout.</p>
-                                                <a href="javascript:void(0)" class="price-calculate">Calculate shipping</a>
-                                                <div class="calculate-shipping-box">
-                                                    <form action="#" method="POST">
+                            <div class="col-xl-5">
+                                <div class="cart-widget">
+                                    <h4 class="title">Cart Totals</h4>
+
+                                    <table class="table table-2">
+                                        <tbody>
+                                            <tr>
+                                                <th>Subtotal</th>
+                                                <td>Rp. <?php echo number_format($row2['sumprice']) ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Shipping</th>
+                                                <td>
+                                                    <div>
+                                                        <label class="control-label">Total Weights</label>
                                                         <div class="form-group">
-                                                            <div class="cart-select">
-                                                                <select name="country" id="country">
-                                                                    <option value="uk">United Kingdom</option>
+                                                            <?php echo $rowsumq['sumquantity'] * 500; ?> Grams
+                                                        </div>
+                                                        <label class="control-label">Province</label>
+                                                        <div class="form-group">
+                                                            <form method="post">
+                                                                <select name="updateprov" onchange="this.form.submit()" class="form-control" required>
+                                                                    <option value="<?php echo $provname; ?>">
+                                                                        <?php echo $provname; ?></option>
+                                                                    <?php
+                                                                    $curl = curl_init();
+                                                                    curl_setopt_array($curl, array(
+                                                                        CURLOPT_URL => "http://api.rajaongkir.com/starter/province",
+                                                                        CURLOPT_RETURNTRANSFER => true,
+                                                                        CURLOPT_ENCODING => "",
+                                                                        CURLOPT_MAXREDIRS => 10,
+                                                                        CURLOPT_TIMEOUT => 30,
+                                                                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                                                                        CURLOPT_CUSTOMREQUEST => "GET",
+                                                                        CURLOPT_HTTPHEADER => array(
+                                                                            "key: 33b4623ebaec869103303a234d1a6ddb"
+                                                                        ),
+                                                                    ));
+                                                                    $response = curl_exec($curl);
+                                                                    $err = curl_error($curl);
+                                                                    curl_close($curl);
+                                                                    $datap = json_decode($response, true);
+
+                                                                    foreach ($datap['rajaongkir']['results'] as $datap1) {
+                                                                        echo "<option value='" . $datap1['province_id'] . "|" . $datap1['province'] . "'>" . $datap1['province'] . "</option>";
+                                                                    }
+                                                                    ?>
                                                                 </select>
-                                                            </div>
+                                                            </form>
                                                         </div>
+                                                        <label class="control-label">City</label>
                                                         <div class="form-group">
-                                                            <input type="text" placeholder="Country">
+                                                            <form method="post">
+                                                                <input id="prov" name="prov" type="hidden" value="<?php echo $provid . '|' . $provname ?>">
+                                                                <select name="updatecity" onchange="this.form.submit()" class="form-control" required>
+                                                                    <option value="<?php echo $cityname; ?>">
+                                                                        <?php echo $cityname; ?></option>
+                                                                    <?php
+                                                                    if ($prov) {
+                                                                        $curl = curl_init();
+                                                                        curl_setopt_array($curl, array(
+                                                                            CURLOPT_URL => "http://api.rajaongkir.com/starter/city?province=" . $provid . "",
+                                                                            CURLOPT_RETURNTRANSFER => true,
+                                                                            CURLOPT_ENCODING => "",
+                                                                            CURLOPT_MAXREDIRS => 10,
+                                                                            CURLOPT_TIMEOUT => 30,
+                                                                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                                                                            CURLOPT_CUSTOMREQUEST => "GET",
+                                                                            CURLOPT_HTTPHEADER => array(
+                                                                                "key: 33b4623ebaec869103303a234d1a6ddb"
+                                                                            ),
+                                                                        ));
+                                                                        $response = curl_exec($curl);
+                                                                        $err = curl_error($curl);
+                                                                        curl_close($curl);
+                                                                        $datac = json_decode($response, true);
+
+                                                                        foreach ($datac['rajaongkir']['results'] as $datac1) {
+                                                                            echo "<option value='" . $datac1['city_id'] . "|" . $datac1['city_name'] . "'>" . $datac1['city_name'] . "</option>";
+                                                                        }
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </form>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <input type="text" placeholder="Town / City">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input type="number" placeholder="Post Code">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <button class="generic-btn border-0 red-hover-btn text-uppercase ">Update</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Total</th>
-                                            <td><strong>$134.00</strong></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <a href="checkout.php" class="mt-40 generic-btn red-hover-btn w-100 d-block" style="height: 50px;">Procced to checkout</a>
-                            </div>
-                            <!-- /. cart widget -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- shop body section end -->
+                                                    </div>
+                                                    <div>
+                                                        <?php
+                                                        if (isset($_POST['updatecity']) || $ship) {
+                                                            $curl = curl_init();
 
+                                                            curl_setopt_array($curl, array(
+                                                                CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+                                                                CURLOPT_RETURNTRANSFER => true,
+                                                                CURLOPT_ENCODING => "",
+                                                                CURLOPT_MAXREDIRS => 10,
+                                                                CURLOPT_TIMEOUT => 30,
+                                                                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                                                                CURLOPT_CUSTOMREQUEST => "POST",
+                                                                CURLOPT_POSTFIELDS => "origin=444&destination=" . $cityid . "&weight=" . $rowsumq['sumquantity'] * 500 . "&courier=jne",
+                                                                CURLOPT_HTTPHEADER => array(
+                                                                    "content-type: application/x-www-form-urlencoded",
+                                                                    "key: 33b4623ebaec869103303a234d1a6ddb"
+                                                                ),
+                                                            ));
 
+                                                            $response = curl_exec($curl);
+                                                            $err = curl_error($curl);
+                                                            curl_close($curl);
+                                                            $jne = json_decode($response, true);
+                                                            $courier = $jne['rajaongkir']['results'][0]['code'];
+                                                            $datao = $jne['rajaongkir']['results'][0]['costs'];
 
+                                                        ?>
+                                                            <table>
+                                                                <tbody>
+                                                                    <form method="post">
+                                                                        <?php
+                                                                        foreach ($datao as $val1) {
+                                                                            echo "<tr>";
+                                                                            echo "<td> <input name='cour' type='hidden' value='" . strtoupper($courier) . "'>" . strtoupper($courier) . "</td>";
+                                                                            echo "<td> <input name='serv' type='hidden' value='" . $val1['service'] . "'>" . $val1['service'] . "</td>";
 
-<!-- footer section start -->
-<section class="footer">
+                                                                            foreach ($val1['cost'] as $val2) {
+                                                                                echo "<td align='right'>Rp " . number_format($val2['value']) . "</td>";
+                                                                                echo "<td>" . $val2['etd'] . " Days</td>";
+                                                                                if ($ship == $val2['value']) {
+                                                                                    echo "<td><input style='width=35px;' type='radio' name='ship' onchange='this.form.submit()' value='" . $val2['value'] . "' checked></td>";
+                                                                                } else {
+                                                                                    echo "<td><input style='width=35px;' type='radio' name='ship' onchange='this.form.submit()' value='" . $val2['value'] . "' ></td>";
+                                                                                }
+                                                                            }
 
-<!-- footer top -->
-
-<div class="footer-bottom pt-77" style="background-color: #F0628C;">
-    <div class="container-1180">
-        <div class="footer-bottom-wrapper">
-            <div class="footer-bottom-primary pb-60">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-5 col-md-9">
-                        <div class="footer-item has-desc">
-                            <div class="footer-logo mb-25">
-                                <img src="produk/logo patris 2.png" width="120" height="90" href="index.php">
-                                <p style="color: #FFFFFF;font-size: 20px;font-weight: 20px;margin-top: 40px;">
-                                    Customer Service</p>
-                                <p style="color: #FFFFFF;font-size: 20px;font-weight: 20px;margin-top: 40px;">Jam
-                                    Kerja: 09.00 s/d 15.00 WIB</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-7 col-lg-7 col-md-12">
-                        <div class="row">
-                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
-                                <div class="footer-menu">
-                                    <ul>
-                                        <li><a href="index.php"
-                                                style="color: #FFFFFF;font-size: 20px;font-weight: 20px;">Home</a>
-                                        </li>
-                                        <li><a href="account.php"
-                                                style="color: #FFFFFF;font-size: 20px;font-weight: 20px; margin-top: 30px;">My
-                                                account</a></li>
-                                        <li><a href="checkout.php"
-                                                style="color: #FFFFFF;font-size: 20px;font-weight: 20px;margin-top: 30px;">Checkout</a>
-                                        </li>
-                                        <li><a href="shop.php"
-                                                style="color: #FFFFFF;font-size: 20px;font-weight: 20px;margin-top: 30px;">Shop</a>
-                                        </li>
-                                        <li><a href="contact.php" style="color: #FFFFFF; font-size: 20px;font-weight: 20px;margin-top: 30px;">Contact</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-
-                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 hidden-sm" style="margin-left:100px;">
-                                <div class="footer-menu">
-                                    <ul>
-                                        <li style="color: #FFFFFF;font-size: 20px;font-weight: 20px;">Follow Us:
-                                        </li>
-                                        <li style="color: #FFFFFF; font-size: 20px;font-weight: 20px;margin-top: 30px;">
-                                            <img
-                                                src="https://img.icons8.com/material-rounded/50/ffffff/instagram-new.png" />
-                                            Patris.Official
-                                        </li>
-                                        <li style="color: #FFFFFF; font-size: 20px;font-weight: 20px;margin-top: 30px;">
-                                            <img src="https://img.icons8.com/material-rounded/50/ffffff/twitter.png" />
-                                            Patris_Shoes</a>
-                                        </li>
-                                        <li style="color: #FFFFFF; font-size: 20px;font-weight: 20px;margin-top: 30px;">
-                                            <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook--v1.png" />
-                                            PATRIS SHOES</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-</section>
-<!-- footer section end -->
-
-
-
-
-
-
-
-    <!-- product popup start -->
-    <section id="product-popup">
-        <div class="product-popup-overlay"></div>
-        <div class="product-popup-container">
-            <div class="product-inner w-100">
-                <div class="product-inner-content">
-                    <div class="quick-close-action"><i class="fal fa-times"></i></div>
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-6">
-                            <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="product-popup-1">
-                                    <div class="product-popup-img">
-                                        <img src="img/product/10.jpg" class="w-100" alt="">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="product-popup-2">
-                                    <div class="product-popup-img">
-                                        <img src="img/product/11.jpg" class="w-100" alt="">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="product-popup-3">
-                                    <div class="product-popup-img">
-                                        <img src="img/product/12.jpg" class="w-100" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <ul class="nav nav-pills justify-content-center mt-10" id="pills-tab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="active" data-toggle="pill" href="#product-popup-1">
-                                        <img src="img/product/10.jpg" class="w-100" alt="">
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="" data-toggle="pill" href="#product-popup-2">
-                                        <img src="img/product/11.jpg" class="w-100" alt="">
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="" data-toggle="pill" href="#product-popup-3">
-                                        <img src="img/product/12.jpg" class="w-100" alt="">
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-7 col-lg-7 col-md-7 col-sm-6">
-                            <div class="product-content">
-                                <div class="product-title">
-                                    <h2>Nari Narwhal Usb...</h2>
-                                </div>
-                                <div class="price">$<span>44.00</span>–<span>$250.00</span></div>
-                                <a href="javascript:void(0)" class="all-feature">See all feature</a>
-                                <div class="quick-quantity mt-30">
-                                    <form action="#" method="POST">
-                                        <input type="number" value="1">
-                                        <button type="submit" class="generic-btn red-hover-btn text-capitalize">add to
-                                            cart</a>
-                                    </form>
-                                </div>
-
-                                <div class="product-desc pb-20 mt-25 gray-border-top">
-                                    <p class="mb-0">Typi non habent claritatem insitam, est usus legentis in iis qui
-                                        facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius
-                                        quod ii legunt saepius. Claritas est etiam processus A Capitalize on low hanging
-                                        fruit to identify a ballpark value added activity to beta test. Override the
-                                        digital...ditional clickthroughs from DevOps. Nanotechnology immersion along the
-                                        information highway will close the […]</p>
-                                </div>
-                                <div class="product-list mt-25">
-                                    <ul>
-                                        <li>– Light green crewnec...t.</li>
-                                        <li>– Hand pockets.</li>
-                                        <li>– Relaxed fit.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- product popup end -->
-
-    <!-- startup popup start -->
-    <section id="startup-popup">
-        <div class="product-popup-overlay has-startup" style="opacity: 1;visibility: visible"></div>
-        <div class="startup-popup-body">
-            <div class="startup-body-content h-100">
-                <div class="row justify-content-end h-100">
-                    <div class="col-6 h-100">
-                        <div class="startup-popup-inner h-100">
-                            <div class="close-search-popup">
-                                <i class="fal fa-times"></i>
-                            </div>
-                            <div class="startup-popup-main-content">
-                                <h2>Get Our Email Letter</h2>
-                                <p class="mb-0">Subscribe to the Mazia store mailing list to receive updates on new
-                                    arrivals, special offers
-                                    and other discount information.</p>
-                                <div class="startup-subscribe-form">
-                                    <form action="#" method="POST">
-                                        <input type="text" placeholder="Subscribe to our newsletter" class="mb-30">
-                                        <button class="generic-btn red-hover-btn text-uppercase">Subscribe now</button>
+                                                                            echo "</tr>";
+                                                                        }
+                                                                        ?>
+                                                                        <input id='city' name='city' type='hidden' value='<?php echo $cityid ?>|<?php echo $cityname ?>'>
+                                                                        <input id='prov' name='prov' type='hidden' value='<?php echo $provid ?>|<?php echo $provname ?>'>
+                                                                    </form>
+                                                                </tbody>
+                                                            </table>
+                                                        <?php } else {
+                                                            echo "Please select province and city";
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total</th>
+                                                <td><strong class="red-color">Rp.
+                                                        <?php echo number_format($row2['sumprice'] + $ship) ?></strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <form method="post">
+                                        <input name='city' type='hidden' value='<?php echo $cityname ?>'>
+                                        <input name='prov' type='hidden' value='<?php echo $provname ?>'>
+                                        <input name='cour' type='hidden' value='<?php echo $cour ?>'>
+                                        <input name='serv' type='hidden' value='<?php echo $serv ?>'>
+                                        <input name='ship' type='hidden' value='<?php echo $ship ?>'>
+                                        <button name="proceed" class="mt-40 generic-btn red-hover-btn w-100 d-block text-uppercase">Proceed to
+                                            checkout</button>
                                     </form>
                                 </div>
                             </div>
-                            <div class="startup-popup-sub-content">
-                                <div class="popup-warning">
-                                    <input type="checkbox" id="startup-popup-hidden">
-                                    <label for="startup-popup-hidden">Do not show the popup again</label>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
     </section>
-    <!-- startup popup end -->
+    <?php include 'footer.php'; ?>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- JS here -->
     <script src="js/vendor/jquery-1.12.4.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
