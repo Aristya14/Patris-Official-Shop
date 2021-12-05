@@ -38,8 +38,8 @@ session_start();
 <body>
     <?php include 'header.php'; ?>
     <section class="contact-area pb-30" data-background="assets/img/bg/bg-map.png">
-        <div class="has-breadcrumb-bg mb-120" style="background-image: url('img/bg/3.jpg');">
-            <div class="breadcrumb-content d-flex justify-content-center align-items-center" style="flex-direction: column;">
+        <div class="has-breadcrumb-bg mb-120" style="background-image: url('img/contact.jpg');">
+            <!-- <div class="breadcrumb-content d-flex justify-content-center align-items-center" style="flex-direction: column;">
                 <h2 class="title">Contact</h2>
                 <nav aria-label="breadcrumb" class="mb-40">
                     <ol class="breadcrumb p-0 m-0">
@@ -47,7 +47,7 @@ session_start();
                         <li class="breadcrumb-item active" aria-current="page">Contact</li>
                     </ol>
                 </nav>
-            </div>
+            </div> -->
         </div>
         <div class="container container-1430">
             <div class="row">
@@ -75,7 +75,7 @@ session_start();
             </div>
         </div>
     </section>
-    <section class="contact-form-area grey-bg pt-100 pb-100">
+    <!-- <section class="contact-form-area grey-bg pt-100 pb-100">
         <div class="container container-1430">
             <div class="form-wrapper">
                 <div class="row align-items-center">
@@ -128,9 +128,9 @@ session_start();
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
-    <section class="contact-form-area pt-100 pb-100">
+    <!-- <section class="contact-form-area pt-100 pb-100">
         <div class="container container-1430">
             <div class="row  service-row">
                 <div class="col-md-4">
@@ -173,7 +173,7 @@ session_start();
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <?php include 'footer.php'; ?>
 
     <script src="js/vendor/jquery-1.12.4.min.js"></script>

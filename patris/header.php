@@ -41,7 +41,7 @@ if (isset($_POST['submitsearch'])) {
                                             echo 'class="active"';
                                         } ?> href="index.php"><span style="font-size: 15px; margin-right: 20px;margin-left: 15px;">Home</span></a>
                                 </li>
-                                <li><a <?php if (strpos($_SERVER['REQUEST_URI'], "shop") !== false) {
+                                <li><a <?php if (strpos($_SERVER['REQUEST_URI'], "shop.php") !== false) {
                                             echo 'class="active"';
                                         } ?> href="shop.php"><span style="font-size: 15px;margin-right: 20px;">Shop<i class="fal fa-angle-down"></i></span></a>
                                     <ul class="submenu">

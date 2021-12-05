@@ -40,7 +40,7 @@ $result = mysqli_query($conn, $sql);
     <?php include 'header.php'; ?>
     <section class="slider">
         <div class="slider-active">
-            <div class="single-slider d-flex align-items-center h-950" data-background="img/bg.jpg">
+            <div class="single-slider d-flex align-items-center h-950" data-background="img/home.gif">
                 <div class="container">
                     <div class="single-slider-inner d-flex align-items-center justify-content-start">
                     </div>
