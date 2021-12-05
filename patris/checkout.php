@@ -233,6 +233,8 @@ $last = $name[1];
                                     </div>
                                     <div class="order-button-payment mt-20">
                                         <button type="submit" class="btn theme-btn">Place order</button>
+                                        <div class="or-divide"><span>or</span></div>
+                                        <a href="cart.php" class="btn theme-btn-2 w-100">Back to cart</a>
                                     </div>
                                 </div>
                             </div>
