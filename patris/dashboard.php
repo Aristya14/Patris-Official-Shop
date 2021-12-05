@@ -12,6 +12,21 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
+<?php
+include 'connect.php'; 
+$sql = "SELECT*from product";
+$query = mysqli_query($conn, $sql);
+
+$sql2 = "SELECT*from orders";
+$query2 = mysqli_query($conn, $sql2);
+
+$sql3 = "SELECT*from customer";
+$query3 = mysqli_query($conn, $sql3);
+
+$sql4 = "SELECT*from category";
+$query4 = mysqli_query($conn, $sql4);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -134,23 +149,35 @@ Coded by www.creative-tim.com
                 <div class="row">
                   <div class="col-5 col-md-4">
                     <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-globe text-warning"></i>
+                      <i><img src="https://img.icons8.com/ios-filled/50/000000/new-product.png"/></i>
                     </div>
                   </div>
                   <div class="col-7 col-md-8">
                     <div class="numbers">
-                      <p class="card-category">Capacity</p>
-                      <p class="card-title">150GB
-                      <p>
+                      <p class="card-category">Produk</p>
+                      <p class="card-title" style="margin-top: 30px; margin-bottom: 30px"><?php echo mysqli_num_rows($query)?></p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-refresh"></i>
-                  Update Now
+              
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i><img src="https://img.icons8.com/ios-filled/50/000000/shopaholic.png"/></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Orders</p>
+                      <p class="card-title" style="margin-top: 30px; margin-bottom: 30px"><?php echo mysqli_num_rows($query2)?><p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -161,23 +188,15 @@ Coded by www.creative-tim.com
                 <div class="row">
                   <div class="col-5 col-md-4">
                     <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-money-coins text-success"></i>
+                      <i><img src="https://img.icons8.com/external-glyph-geotatah/50/000000/external-buyer-cashless-society-glyph-glyph-geotatah.png"/></i>
                     </div>
                   </div>
                   <div class="col-7 col-md-8">
                     <div class="numbers">
-                      <p class="card-category">Revenue</p>
-                      <p class="card-title">$ 1,345
-                      <p>
+                      <p class="card-category">Account Customer</p>
+                      <p class="card-title"style="margin-top: 25px; margin-bottom: 12px"><?php echo mysqli_num_rows($query3)?><p>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-calendar-o"></i>
-                  Last day
                 </div>
               </div>
             </div>
@@ -188,50 +207,15 @@ Coded by www.creative-tim.com
                 <div class="row">
                   <div class="col-5 col-md-4">
                     <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-vector text-danger"></i>
+                      <i><img src="https://img.icons8.com/ios-filled/50/000000/opened-folder.png"/></i>
                     </div>
                   </div>
                   <div class="col-7 col-md-8">
                     <div class="numbers">
-                      <p class="card-category">Errors</p>
-                      <p class="card-title">23
-                      <p>
+                      <p class="card-category">Category Produk</p>
+                      <p class="card-title" style="margin-top: 25px; margin-bottom: 12px"><?php echo mysqli_num_rows($query4)?><p>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-clock-o"></i>
-                  In the last hour
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats">
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-5 col-md-4">
-                    <div class="icon-big text-center icon-warning">
-                      <i class="nc-icon nc-favourite-28 text-primary"></i>
-                    </div>
-                  </div>
-                  <div class="col-7 col-md-8">
-                    <div class="numbers">
-                      <p class="card-category">Followers</p>
-                      <p class="card-title">+45K
-                      <p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-refresh"></i>
-                  Update now
                 </div>
               </div>
             </div>
@@ -241,89 +225,79 @@ Coded by www.creative-tim.com
           <div class="col-md-12">
             <div class="card ">
               <div class="card-header ">
-                <h5 class="card-title">Users Behavior</h5>
-                <p class="card-category">24 Hours performance</p>
+                <h5 class="card-title">Patris Official Shop</h5>
+                <p class="card-category">Best Choice for your fashion shoes</p>
+                <img src="img/home.gif">
               </div>
               <div class="card-body ">
-                <canvas id=chartHours width="400" height="100"></canvas>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-history"></i> Updated 3 minutes ago
-                </div>
+                <canvas id=chartHours width="400" height="10">
+                </canvas>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-4">
-            <div class="card ">
-              <div class="card-header ">
-                <h5 class="card-title">Email Statistics</h5>
-                <p class="card-category">Last Campaign Performance</p>
-              </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
               <div class="card-body ">
-                <canvas id="chartEmail"></canvas>
-              </div>
-              <div class="card-footer ">
-                <div class="legend">
-                  <i class="fa fa-circle text-primary"></i> Opened
-                  <i class="fa fa-circle text-warning"></i> Read
-                  <i class="fa fa-circle text-danger"></i> Deleted
-                  <i class="fa fa-circle text-gray"></i> Unopened
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i><img src="https://img.icons8.com/ios-filled/30/000000/whatsapp--v4.png"/></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">WhatsApp</p>
+                      <p class="card-title" style="font-size: 15px ; color: #F0628C;">88230143092</p>
+                    </div>
+                  </div>
                 </div>
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-calendar"></i> Number of emails sent
+              </div>
+              
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i><img src="https://img.icons8.com/material-sharp/30/000000/email-open.png"/></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Email</p>
+                      <p class="card-title" style="font-size: 15px ;color: #F0628C;">AdminPatris@
+                      gmail.com<p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-8">
-            <div class="card card-chart">
-              <div class="card-header">
-                <h5 class="card-title">NASDAQ: AAPL</h5>
-                <p class="card-category">Line Chart with Points</p>
-              </div>
-              <div class="card-body">
-                <canvas id="speedChart" width="400" height="100"></canvas>
-              </div>
-              <div class="card-footer">
-                <div class="chart-legend">
-                  <i class="fa fa-circle text-info"></i> Tesla Model S
-                  <i class="fa fa-circle text-warning"></i> BMW 5 Series
-                </div>
-                <hr />
-                <div class="card-stats">
-                  <i class="fa fa-check"></i> Data information certified
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats" style="width:400px">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i><img src="https://img.icons8.com/ios-filled/30/000000/marker.png"/></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Address</p>
+                      <p style="font-size: 15px ; color: #F0628C;">Perumahan Graha Menganti 2 Blok K2 no 22, Menganti, Gresik<p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          
         </div>
-      </div>
-      <footer class="footer footer-black  footer-white ">
-        <div class="container-fluid">
-          <div class="row">
-            <nav class="footer-nav">
-              <ul>
-                <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
-                <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
-                <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
-              </ul>
-            </nav>
-            <div class="credits ml-auto">
-              <span class="copyright">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
-              </span>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   </div>
   <!--   Core JS Files   -->
