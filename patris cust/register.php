@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
     $phone = $_POST['phone'];
 
 
-    $sql = "SELECT * FROM customer WHERE customer_email ='$email'";
+    $sql = "SELECT * FROM customer WHERE customer_email ='$email' or customer_username ='$username'";
     $result = mysqli_query($conn, $sql);
     if ($result->num_rows == 0) {
         $sql = "INSERT INTO customer(customer_name, customer_sex, customer_email, customer_username, customer_password, customer_birth, customer_telp) VALUES ('$name', '$sex', '$email', '$username', '$password', '$birth', '$phone')";
@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
             echo "<script>alert('Something is wrong.')</script>";
         }
     } else {
-        echo "<script>alert('Email has been registered.')</script>";
+        echo "<script>alert('Email or username has been registered.')</script>";
     }
 }
 
