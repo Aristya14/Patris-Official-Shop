@@ -160,8 +160,8 @@ include 'connect.php'; ?>
                     <div class="col-md-12">
                         <div class="card ">
                             <div class="card-header ">
-                                <h5 class="card-title">List Product</h5>
-                                <p class="card-category">All Product in Patris Official Shop</p>
+                                <h5 class="card-title">List Review Product</h5>
+                                <p class="card-category">All Review in Patris Official Shop</p>
                             </div>
                             <div class="card-body">
                                 <div style=" margin-left : 10px">
