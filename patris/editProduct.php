@@ -117,8 +117,8 @@ if (mysqli_num_rows($query) < 1) {
         <div class="sidebar dashboard-color" data-color="white" data-active-color="danger">
             <div class="logo">
                 <a href="dashboard.php" class="simple-text logo-mini">
-                    <div class="">
-                        <img src="img/logo.png">
+                    <div class="logo-image-small">
+                        <img src="img/logo.png" style="width: 35px; margin-top: 10px">
                     </div>
                 </a>
                 <a href="dashboard.php" class="simple-text logo-normal">
@@ -141,7 +141,7 @@ if (mysqli_num_rows($query) < 1) {
                         </a>
                     </li>
                     <li>
-                        <a href="./map.php">
+                        <a href="./pesananAdmin.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
                             <p>Pesanan</p>
                         </a>

@@ -48,6 +48,7 @@ Coded by www.creative-tim.com
         input[type=submit]:hover{
             opacity:0.9;
         }
+        
         .addproduct{
           margin-top: 80px;
         }
@@ -89,8 +90,8 @@ Coded by www.creative-tim.com
         <div class="sidebar dashboard-color" data-color="white" data-active-color="danger">
             <div class="logo">
                 <a href="./dashboard.php" class="simple-text logo-mini">
-                    <div class="">
-                        <img src="img/logo.png">
+                    <div class="logo-image-small">
+                        <img src="img/logo.png" style="width: 35px; margin-top: 5px">
                     </div>
                 </a>
                 <a href="./dashboard.php" class="simple-text logo-normal">
@@ -108,19 +109,19 @@ Coded by www.creative-tim.com
                         </a>
                     </li>
                     <li  class="active" >
-                        <a href="./icons.php">
+                        <a href="./productAdmin.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/women-shoe-side-view.png" /></i>
                             <p>Produk</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./map.php">
+                        <a href="./pesananAdmin.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
                             <p>Pesanan</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./notifications.php">
+                        <a href="./ulasanAdmin.php">
                             <i>
                                 <img
                                     src="https://img.icons8.com/external-bearicons-glyph-bearicons/64/fa314a/external-positive-review-reputation-bearicons-glyph-bearicons.png" />
