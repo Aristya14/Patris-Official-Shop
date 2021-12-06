@@ -7,7 +7,7 @@ error_reporting(0);
 session_start();
 
 if (isset($_SESSION['username'])) {
-    header("Location: index.php");
+    header("Location: dashboard.php");
 }
 
 if (isset($_POST['submit'])) {
@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
         if ($result->num_rows == 1) {
             $row = mysqli_fetch_assoc($result);
             $_SESSION['username'] = $row['username'];
-            header("Location: indexAdmin.php");
+            header("Location: dashboard.php");
         } else {
             echo "<script>alert('Username or Password is wrong. Please try again!')</script>";
         }
@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
 			<div class="row justify-content-center">
 				<div class="col-md-12 col-lg-10">
 					<div class="wrap d-md-flex">
-						<div class="img" style="background-image: url(img/admin/adminlogin.png);">
+						<div class="img" style="background-image: url(img/adminlogin.png);">
 			      </div>
 						<div class="login-wrap p-4 p-md-5">
 			      	<div class="d-flex">

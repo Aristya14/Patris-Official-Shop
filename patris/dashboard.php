@@ -120,9 +120,7 @@ include 'connect.php';
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
             <ul class="navbar-nav">
               <li>
-                <a href="javascript:;">
-                 <img src="https://img.icons8.com/ios-glyphs/40/fa314a/test-account.png" />
-                </a>
+                <a class="nav-brand text-danger" href="logout.php">Logout</a>
               </li>
             </ul>
           </div>

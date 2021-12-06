@@ -15,6 +15,27 @@ Coded by www.creative-tim.com
 <?php
 
 include 'connect.php';
+
+
+
+$sql = "SELECT order_receiver from orders where order_id=''";
+$query = mysqli_query($conn, $sql);
+
+$sql2 = "SELECT order_province from orders where order_id=''";
+$query2 = mysqli_query($conn, $sql2);
+
+$sql3 = "SELECT order_city from orders where order_id=''";
+$query3 = mysqli_query($conn, $sql3);
+
+$sql4 = "SELECT order_address from orders where order_id=''";
+$query4 = mysqli_query($conn, $sql4);
+
+$sql5 = "SELECT product_id from order_detail where order_id=''";
+$query5 = mysqli_query($conn, $sql5);
+
+$sql6 = "SELECT quantity from order_detail where order_id=''";
+$query6 = mysqli_query($conn, $sql6);
+
 ?>
 
 <!DOCTYPE html>
@@ -90,20 +111,20 @@ include 'connect.php';
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li  class="active" >
+                    <li>
                         <a href="productAdmin.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/women-shoe-side-view.png" /></i>
                             <p>Produk</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="./map.php">
+                    <li class="active">
+                        <a href="./pesananAdmin.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
                             <p>Pesanan</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./notifications.php">
+                        <a href="./ulasanAdmin.php">
                             <i>
                                 <img
                                     src="https://img.icons8.com/external-bearicons-glyph-bearicons/64/fa314a/external-positive-review-reputation-bearicons-glyph-bearicons.png" />
@@ -143,9 +164,7 @@ include 'connect.php';
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="navbar-nav">
                             <li>
-                                <a href="javascript:;">
-                                    <img src="https://img.icons8.com/ios-glyphs/40/fa314a/test-account.png" />
-                                </a>
+                                <a class="nav-brand text-danger" href="logout.php">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -166,19 +185,19 @@ include 'connect.php';
                                 <table style="width:500px ; margin-bottom:100px ;" border="1">
                                 <tr>
                                     <td style="background-color:#F0628C; color: white;">Penerima</td>
-                                    <td></td>
+                                    <td><?php echo mysqli_num_rows($query)?></td>
                                 </tr>
                                 <tr>
                                     <td style="background-color:#F0628C; color: white;">Provinsi</td>
-                                    <td></td>
+                                    <td><?php echo mysqli_num_rows($query2)?></td>
                                 </tr>
                                 <tr>
                                     <td style="background-color:#F0628C; color: white;">Kota</td>
-                                    <td></td>
+                                    <td><?php echo mysqli_num_rows($query3)?></td>
                                 </tr>
                                 <tr>
                                     <td style="background-color:#F0628C; color: white;">Alamat</td>
-                                    <td></td>
+                                    <td><?php echo mysqli_num_rows($query4)?></td>
                                 </tr>
                                 </table>
 
@@ -193,13 +212,12 @@ include 'connect.php';
                                             <!-- <th>Status</th>
                                             <th>Harga</th>
                                             <th>Tindakan</th> -->
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <td></td>
-                                        <td></td>
-                                        
-
+                                        <td><?php echo mysqli_num_rows($query5)?></td>
+                                        <td><?php echo mysqli_num_rows($query6)?></td>
                                     </tbody>
                                 </table>
 
