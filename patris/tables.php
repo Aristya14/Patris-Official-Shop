@@ -1,9 +1,21 @@
 <?php
 require 'connect.php';
 
-$order_cost = mysqli_query($conn, "select order_cost from `order` where order_status='Shipped'");
-$order_date = mysqli_query($conn, "select order_date from `order` where order_status='Shipped'");
+$order_cost = mysqli_query($conn, "select order_cost from orders where order_status='Shipped'");
+$order_date = mysqli_query($conn, "select order_date from orders where order_status='Shipped'");
 
+$sql = "SELECT*from product";
+$query = mysqli_query($conn, $sql);
+
+$sql2 = "SELECT*from orders";
+$query2 = mysqli_query($conn, $sql2);
+
+$sql3 = "SELECT*from customer";
+$query3 = mysqli_query($conn, $sql3);
+
+$sql4 = "SELECT avg(review_rating) as rate from review";
+$query4 = mysqli_query($conn, $sql4);
+$result = mysqli_fetch_array($query4)
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +28,7 @@ $order_date = mysqli_query($conn, "select order_date from `order` where order_st
   <title>
     Patris Official Shop Admin
   </title>
-  <link rel="shortcut icon" type="image/x-icon" href="produk/logo.png">
+  <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
   <style>
     .dashboard-color {
       background-color: coral;
@@ -36,12 +48,12 @@ $order_date = mysqli_query($conn, "select order_date from `order` where order_st
   <div class="wrapper">
     <div class="sidebar dashboard-color" data-color="white" data-active-color="danger">
       <div class="logo">
-        <a href="https://www.creative-tim.com" class="simple-text logo-mini">
+        <a href="./dashboard.php" class="simple-text logo-mini">
           <div class="logo-image-small">
-            <img src="produk/logo.png">
+            <img src="img/logo.png">
           </div>
         </a>
-        <a href="https://www.creative-tim.com" class="simple-text logo-normal">
+        <a href="./dashboard.php" class="simple-text logo-normal">
           Dashboard
         </a>
       </div>
@@ -115,8 +127,87 @@ $order_date = mysqli_query($conn, "select order_date from `order` where order_st
           </div>
         </div>
       </nav>
-
+  
       <section class="content">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i><img src="https://img.icons8.com/ios-filled/50/000000/new-product.png"/></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Produk</p>
+                      <p class="card-title" style="margin-top: 30px; margin-bottom: 30px"><?php echo mysqli_num_rows($query)?></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i><img src="https://img.icons8.com/ios-filled/50/000000/shopaholic.png"/></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Orders</p>
+                      <p class="card-title" style="margin-top: 30px; margin-bottom: 30px"><?php echo mysqli_num_rows($query2)?><p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i><img src="https://img.icons8.com/external-glyph-geotatah/50/000000/external-buyer-cashless-society-glyph-glyph-geotatah.png"/></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Account Customer</p>
+                      <p class="card-title"style="margin-top: 25px; margin-bottom: 12px"><?php echo mysqli_num_rows($query3)?><p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <i><img src="https://img.icons8.com/external-vitaliy-gorbachev-fill-vitaly-gorbachev/50/000000/external-rating-support-vitaliy-gorbachev-fill-vitaly-gorbachev.png"/></i>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category">Rating Produk</p>
+                      <p class="card-title" style="margin-top: 25px; margin-bottom: 12px"><?php echo number_format($result['rate'],1)?><p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header" style="margin-left: auto; margin-right: auto">

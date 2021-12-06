@@ -3,8 +3,8 @@
 * Paper Dashboard 2 - v2.0.1
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-2
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
+* Product Page: ./dashboard.php/product/paper-dashboard-2
+* Copyright 2020 Creative Tim (./dashboard.php)
 
 Coded by www.creative-tim.com
 
@@ -26,7 +26,7 @@ include 'connect.php'; ?>
     <title>
         Patris Official Shop Admin
     </title>
-    <link rel="shortcut icon" type="image/x-icon" href="produk/logo.png">
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
     <style>
         .dashboard-color {
             background-color: coral;
@@ -69,12 +69,12 @@ include 'connect.php'; ?>
     <div class="wrapper">
         <div class="sidebar dashboard-color" data-color="white" data-active-color="danger">
             <div class="logo">
-                <a href="https://www.creative-tim.com" class="simple-text logo-mini">
+                <a href="./dashboard.php" class="simple-text logo-mini">
                     <div class="logo-image-small">
-                        <img src="produk/logo.png">
+                        <img src="img/logo.png">
                     </div>
                 </a>
-                <a href="https://www.creative-tim.com" class="simple-text logo-normal">
+                <a href="./dashboard.php" class="simple-text logo-normal">
                     Dashboard
                 </a>
             </div>

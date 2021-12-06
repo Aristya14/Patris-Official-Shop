@@ -3,8 +3,8 @@
 * Paper Dashboard 2 - v2.0.1
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-2
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
+* Product Page: dashboard.php/product/paper-dashboard-2
+* Copyright 2020 Creative Tim (dashboard.php)
 
 Coded by www.creative-tim.com
 
@@ -47,7 +47,7 @@ if (mysqli_num_rows($query) < 1) {
     <title>
         Patris Official Shop Admin
     </title>
-    <link rel="shortcut icon" type="image/x-icon" href="produk/logo.png">
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
     <style>
         .dashboard-color {
             background-color: coral;
@@ -116,12 +116,12 @@ if (mysqli_num_rows($query) < 1) {
     <div class="wrapper">
         <div class="sidebar dashboard-color" data-color="white" data-active-color="danger">
             <div class="logo">
-                <a href="https://www.creative-tim.com" class="simple-text logo-mini">
+                <a href="dashboard.php" class="simple-text logo-mini">
                     <div class="">
-                        <img src="produk/logo.png">
+                        <img src="img/logo.png">
                     </div>
                 </a>
-                <a href="https://www.creative-tim.com" class="simple-text logo-normal">
+                <a href="dashboard.php" class="simple-text logo-normal">
                     Dashboard
                 </a>
             </div>
@@ -135,7 +135,7 @@ if (mysqli_num_rows($query) < 1) {
                         </a>
                     </li>
                     <li class="active">
-                        <a href="./icons.php">
+                        <a href="./productAdmin.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/women-shoe-side-view.png" /></i>
                             <p>Produk</p>
                         </a>
@@ -147,7 +147,7 @@ if (mysqli_num_rows($query) < 1) {
                         </a>
                     </li>
                     <li>
-                        <a href="./notifications.php">
+                        <a href="ulasanAdmin.php">
                             <i>
                                 <img src="https://img.icons8.com/external-bearicons-glyph-bearicons/64/fa314a/external-positive-review-reputation-bearicons-glyph-bearicons.png" />
                             </i>
@@ -212,13 +212,13 @@ if (mysqli_num_rows($query) < 1) {
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <!-- <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label for="product_image">Product Image</label>
                                             <input type="file" name="product_image" value="<?php //echo $data['product_image'] 
-                                                                                            ?>" />
+                                                                                            ?>"
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label for="product_desc">Description <span class="required">*</span></label>
