@@ -117,8 +117,8 @@ if (mysqli_num_rows($query) < 1) {
         <div class="sidebar dashboard-color" data-color="white" data-active-color="danger">
             <div class="logo">
                 <a href="dashboard.php" class="simple-text logo-mini">
-                    <div class="logo-image-small">
-                        <img src="img/logo.png" style="width: 35px; margin-top: 10px">
+                    <div class="">
+                        <img src="img/logo.png">
                     </div>
                 </a>
                 <a href="dashboard.php" class="simple-text logo-normal">
@@ -141,7 +141,7 @@ if (mysqli_num_rows($query) < 1) {
                         </a>
                     </li>
                     <li>
-                        <a href="./pesananAdmin.php">
+                        <a href="./map.php">
                             <i><img src="https://img.icons8.com/ios-filled/50/fa314a/order-history.png" /></i>
                             <p>Pesanan</p>
                         </a>
@@ -196,7 +196,7 @@ if (mysqli_num_rows($query) < 1) {
             <!-- End Navbar -->
             <section class="checkout-area pb-70">
                 <div class="container">
-                    <form action="proses-editproduct.php" method="POST">
+                    <form action="proses-editproduct.php" method="POST" enctype="multipart/form-data">
                         <fieldset>
                             <input type="hidden" name="product_id" value="<?php echo $data['product_id'] ?>" />
 
@@ -212,13 +212,12 @@ if (mysqli_num_rows($query) < 1) {
                                         </div>
                                     </div>
 
-                                    <!-- <div class="col-md-12">
+                                    <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label for="product_image">Product Image</label>
-                                            <input type="file" name="product_image" value="<?php //echo $data['product_image'] 
-                                                                                            ?>"
+                                            <input type="file" name="product_image"/>
                                         </div>
-                                    </div> -->
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label for="product_desc">Description <span class="required">*</span></label>
