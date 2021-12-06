@@ -14,7 +14,9 @@ Coded by www.creative-tim.com
 -->
 
 <?php
-include 'connect.php'; ?>
+include 'connect.php'; 
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -172,28 +174,30 @@ include 'connect.php'; ?>
                                             <th>Stok</th>
                                             <th>Kategori</th>
                                             <th>Harga</th>
+                                            <th>Rate</th>
                                             <th>Tindakan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                         <?php
-                                        $sql = "SELECT * FROM product";
+                                        $sql = "SELECT p.product_id as ID,p.product_name as nama, p.product_image as foto, p.product_stock as stock, p.product_category as category, p.product_price as price, IfNULL((avg(r.review_rating)),0) as rate FROM review r 
+                                        right JOIN  product p on p.product_id=r.product_id GROUP by p.product_id;";
                                         $query = mysqli_query($conn, $sql);
 
                                             while ($data=mysqli_fetch_array($query)){
                                                 ?>
                                                 <tr>                                                        
-                                                    <td><?php echo $data['product_id'];?></td>
-                                                    <td><?php echo $data['product_name'];?></td>
-                                                    <td><?php echo '<img src="data:image/jpeg;base64,' . base64_encode($data['product_image']) . '"width="150px" alt="">'?></td>
-                                                    <td><?php echo $data['product_stock'];?></td>
-                                                    <td><?php echo $data['product_category'];?></td>
-                                                    <td><?php echo $data['product_price'];?></td>
-                                                     
+                                                    <td><?php echo $data['ID'];?></td>
+                                                    <td><?php echo $data['nama'];?></td>
+                                                    <td><?php echo '<img src="data:image/jpeg;base64,' . base64_encode($data['foto']) . '"width="150px" alt="">'?></td>
+                                                    <td><?php echo $data['stock'];?></td>
+                                                    <td><?php echo $data['category'];?></td>
+                                                    <td><?php echo $data['price'];?></td>
+                                                    <td><?php echo number_format($data['rate'],1)?></td>
                                                      <td>
-                                                        <a href="editProduct.php?id=<?php echo $data['product_id']; ?>">Edit</a> |
-                                                        <a href="removeProduct.php?id=<?php echo $data['product_id']; ?>">Hapus</a>
+                                                        <a href="editProduct.php?id=<?php echo $data['ID']; ?>">Edit</a> |
+                                                        <a href="removeProduct.php?id=<?php echo $data['ID']; ?>">Hapus</a>
                                                     </td>
                                             </tr> 
                                                             <?php
