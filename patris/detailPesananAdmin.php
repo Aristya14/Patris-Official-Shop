@@ -16,26 +16,31 @@ Coded by www.creative-tim.com
 
 include 'connect.php';
 
+$id=$_GET['id'];
 
-
-$sql = "SELECT order_receiver from orders where order_id=''";
+$sql = "SELECT order_receiver FROM orders WHERE order_id=$id";
 $query = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($query);
 
-$sql2 = "SELECT order_province from orders where order_id=''";
+$sql2 = "SELECT order_province FROM orders WHERE order_id=$id";
 $query2 = mysqli_query($conn, $sql2);
+$row2 = mysqli_fetch_assoc($query2);
 
-$sql3 = "SELECT order_city from orders where order_id=''";
+$sql3 = "SELECT order_city FROM orders WHERE order_id=$id";
 $query3 = mysqli_query($conn, $sql3);
+$row3 = mysqli_fetch_assoc($query3);
 
-$sql4 = "SELECT order_address from orders where order_id=''";
+$sql4 = "SELECT order_address FROM orders WHERE order_id=$id";
 $query4 = mysqli_query($conn, $sql4);
+$row4 = mysqli_fetch_assoc($query4);
 
-$sql5 = "SELECT product_id from order_detail where order_id=''";
+$sql5 = "SELECT product_id FROM order_detail WHERE order_id=$id";
 $query5 = mysqli_query($conn, $sql5);
+$row5 = mysqli_fetch_assoc($query5);
 
-$sql6 = "SELECT quantity from order_detail where order_id=''";
+$sql6 = "SELECT quantity FROM order_detail WHERE order_id=$id";
 $query6 = mysqli_query($conn, $sql6);
-
+$row6 = mysqli_fetch_assoc($query6);
 ?>
 
 <!DOCTYPE html>
@@ -185,19 +190,19 @@ $query6 = mysqli_query($conn, $sql6);
                                 <table style="width:500px ; margin-bottom:100px ;" border="1">
                                 <tr>
                                     <td style="background-color:#F0628C; color: white;">Penerima</td>
-                                    <td><?php echo mysqli_num_rows($query)?></td>
+                                    <td><?php echo $row['order_receiver']?></td>
                                 </tr>
                                 <tr>
                                     <td style="background-color:#F0628C; color: white;">Provinsi</td>
-                                    <td><?php echo mysqli_num_rows($query2)?></td>
+                                    <td><?php echo $row2['order_province']?></td>
                                 </tr>
                                 <tr>
                                     <td style="background-color:#F0628C; color: white;">Kota</td>
-                                    <td><?php echo mysqli_num_rows($query3)?></td>
+                                    <td><?php echo $row3['order_city']?></td>
                                 </tr>
                                 <tr>
                                     <td style="background-color:#F0628C; color: white;">Alamat</td>
-                                    <td><?php echo mysqli_num_rows($query4)?></td>
+                                    <td><?php echo $row4['order_address']?></td>
                                 </tr>
                                 </table>
 
@@ -216,8 +221,8 @@ $query6 = mysqli_query($conn, $sql6);
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <td><?php echo mysqli_num_rows($query5)?></td>
-                                        <td><?php echo mysqli_num_rows($query6)?></td>
+                                        <td><?php echo $row5['product_id']?></td>
+                                        <td><?php echo $row6['quantity']?></td>
                                     </tbody>
                                 </table>
 
