@@ -10,10 +10,9 @@ if (isset($_POST['simpan'])) {
     $category = $_POST['product_category'];
     $price = $_POST['product_price'];
     $size = $_POST['product_size'];
+    
     $file_tmp = $_FILES['product_image']['tmp_name'];
     $foto = file_get_contents($file_tmp);
-    echo $foto;
-    echo '<img src="data:image/png;base64,' . base64_encode($foto) . '" alt="">';
 
     // query SQL untuk insert data
     $stmt = mysqli_prepare($conn, "UPDATE product SET 
