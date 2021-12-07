@@ -9,8 +9,9 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
 } else {
     $user = $_SESSION['username'];
+    $userid = $_SESSION['userid'];
 
-    $sql = "SELECT * FROM customer WHERE customer_username ='$user'";
+    $sql = "SELECT * FROM customer WHERE customer_id ='$userid'";
     $result = mysqli_query($conn, $sql);
     if ($result->num_rows == 1) {
         $row = mysqli_fetch_assoc($result);
@@ -32,7 +33,7 @@ if (isset($_POST['submit'])) {
     $birth = $_POST['birth'];
     $phone = $_POST['phone'];
 
-    $sql2 = "UPDATE customer set customer_name='$name', customer_sex='$sex', customer_password='$password', customer_birth='$birth', customer_telp='$phone' where customer_username ='$user'";
+    $sql2 = "UPDATE customer set customer_name='$name', customer_sex='$sex', customer_password='$password', customer_birth='$birth', customer_telp='$phone' where customer_id ='$userid'";
     $result2 = mysqli_query($conn, $sql2);
     if ($result2) {
         header("Location: account.php");

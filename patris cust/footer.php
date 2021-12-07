@@ -26,7 +26,7 @@
                                             <li><a href="index.php" style="color: #FFFFFF;font-size: 20px;font-weight: 20px;">Home</a>
                                             </li>
                                             <li><a href="account.php" style="color: #FFFFFF;font-size: 20px;font-weight: 20px; margin-top: 30px;">My
-                                                    account</a></li>
+                                                    Account</a></li>
                                             <li><a href="shop.php" style="color: #FFFFFF;font-size: 20px;font-weight: 20px;margin-top: 30px;">Shop</a>
                                             </li>
                                             <li><a href="contact.php" style="color: #FFFFFF; font-size: 20px;font-weight: 20px;margin-top: 30px;">Contact</a>

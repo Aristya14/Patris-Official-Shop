@@ -2,21 +2,22 @@
 
 if (isset($_SESSION['username'])) {
     $user = $_SESSION['username'];
+    $userid = $_SESSION['userid'];
 }
 
 $sqlcat = "SELECT * FROM category";
 $resultcat = mysqli_query($conn, $sqlcat);
 
-$sqlcart = "SELECT * FROM customer cs, cart c, product p where cs.customer_id=c.customer_id and c.product_id=p.product_id and cs.customer_username='$user'";
+$sqlcart = "SELECT * FROM cart c, product p where c.product_id=p.product_id and customer_id='$userid'";
 $resultcart = mysqli_query($conn, $sqlcart);
 $numcart = $resultcart->num_rows;
 
 if ($numcart) {
-    $sqlsump = "SELECT sum(c.quantity*p.product_price) as sumprice FROM customer cs, cart c, product p where cs.customer_id=c.customer_id and c.product_id=p.product_id and cs.customer_username='$user'";
+    $sqlsump = "SELECT sum(c.quantity*p.product_price) as sumprice FROM cart c, product p where c.product_id=p.product_id and customer_id='$userid'";
     $resultsump = mysqli_query($conn, $sqlsump);
     $rowsump = mysqli_fetch_assoc($resultsump);
 
-    $sqlsumq = "SELECT sum(c.quantity) as sumquantity FROM customer cs, cart c, product p where cs.customer_id=c.customer_id and c.product_id=p.product_id and cs.customer_username='$user'";
+    $sqlsumq = "SELECT sum(quantity) as sumquantity FROM cart  where customer_id='$userid'";
     $resultsumq = mysqli_query($conn, $sqlsumq);
     $rowsumq = mysqli_fetch_assoc($resultsumq);
 }
@@ -157,7 +158,7 @@ if (isset($_POST['submitsearch'])) {
                                 <?php if (isset($_SESSION['username'])) echo '
                                     <ul class="submenu bold-content text-right">
                                     <li><a href="account.php">My Account</a></li>
-                                    <li><a href="order.php">My Order</a></li>
+                                    <li><a href="order.php">My Orders</a></li>
                                     <li><a href="logout.php">Logout</a></li>
                                     </ul>
                                     '; ?>

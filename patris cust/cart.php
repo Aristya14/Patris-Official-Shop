@@ -10,22 +10,22 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
 } else {
     $user = $_SESSION['username'];
+    $userid = $_SESSION['userid'];
 }
-$sql = "SELECT * FROM customer cs, cart c, product p where cs.customer_id=c.customer_id and c.product_id=p.product_id and cs.customer_username='$user'";
+$sql = "SELECT * FROM cart c, product p where c.product_id=p.product_id and customer_id='$userid'";
 $result = mysqli_query($conn, $sql);
 $num = $result->num_rows;
 
 if ($num) {
-    $sql2 = "SELECT sum(c.quantity*p.product_price) as sumprice FROM customer cs, cart c, product p where cs.customer_id=c.customer_id and c.product_id=p.product_id and cs.customer_username='$user'";
+    $sql2 = "SELECT sum(c.quantity*p.product_price) as sumprice FROM cart c, product p where c.product_id=p.product_id and customer_id='$userid'";
     $result2 = mysqli_query($conn, $sql2);
     $row2 = mysqli_fetch_assoc($result2);
 }
 
 if (isset($_POST['deletecart'])) {
-    $cid = $_POST['cid'];
     $pid = $_POST['pid'];
 
-    $sql3 = "DELETE FROM cart where customer_id = '$cid' and product_id = '$pid'";
+    $sql3 = "DELETE FROM cart where customer_id = '$userid' and product_id = '$pid'";
     $result3 = mysqli_query($conn, $sql3);
     if ($result3) {
         header("Location: cart.php");
@@ -37,7 +37,6 @@ if (isset($_POST['deletecart'])) {
 if (isset($_POST['updateqty'])) {
     $qty = $_POST['updateqty'];
     $pid2 = $_POST['pid2'];
-    $cid2 = $_POST['cid2'];
     $stock = $_POST['stock'];
     $pname = $_POST['pname'];
 
@@ -45,7 +44,7 @@ if (isset($_POST['updateqty'])) {
         echo "<script>alert('" . $pname . " only have " . $stock . " on stock')</script>";
     } else {
 
-        $sql4 = "UPDATE cart set quantity = '$qty' where customer_id = '$cid2' and product_id = '$pid2'";
+        $sql4 = "UPDATE cart set quantity = '$qty' where customer_id = '$userid' and product_id = '$pid2'";
         $result4 = mysqli_query($conn, $sql4);
         if ($result4) {
             header("Location: cart.php");
@@ -59,41 +58,38 @@ if (isset($_POST['updateprov'])) {
     $prov = explode('|', $_POST['updateprov']);
     $provid = $prov[0];
     $provname = $prov[1];
+    $_SESSION['provid'] = $provid;
+    $_SESSION['provname'] = $provname;
 }
 
 if (isset($_POST['updatecity'])) {
-    $prov = explode('|', $_POST['prov']);
-    $provid = $prov[0];
-    $provname = $prov[1];
     $city = explode('|', $_POST['updatecity']);
     $cityid = $city[0];
     $cityname = $city[1];
+    $_SESSION['cityid'] = $cityid;
+    $_SESSION['cityname'] = $cityname;
 }
 
 if (isset($_POST['ship'])) {
-    $prov = explode('|', $_POST['prov']);
-    $provid = $prov[0];
-    $provname = $prov[1];
-    $city = explode('|', $_POST['city']);
-    $cityid = $city[0];
-    $cityname = $city[1];
     $ship = $_POST['ship'];
     $cour = $_POST['cour'];
     $serv = $_POST['serv'];
+    $_SESSION['courier'] = $cour;
+    $_SESSION['service'] = $serv;
+    $_SESSION['shipprice'] = $ship;
 }
 
 if (isset($_POST['proceed'])) {
-    $ship = $_POST['ship'];
-    if ($ship) {
-        $prov = $_POST['prov'];
-        $city = $_POST['city'];
-        $_SESSION['city'] = $city;
-        $_SESSION['province'] = $prov;
-        $_SESSION['courier'] = $cour;
-        $_SESSION['service'] = $serv;
-        $_SESSION['shipprice'] = $ship;
-
-        header("Location: checkout.php");
+    if ($_SESSION['shipprice']) {
+        $sql5 = "SELECT * from product p, cart c where c.product_id=p.product_id and customer_id='$userid' and c.quantity>p.product_stock";
+        $result5 = mysqli_query($conn, $sql5);
+        if ($result5->num_rows) {
+            while ($row5 = mysqli_fetch_assoc($result5)){
+                echo "<script>alert('" . $row5['product_name'] . " only have " . $row5['product_stock'] . " on stock')</script>";
+            }
+        } else {
+            header("Location: checkout.php");
+        }
     } else {
         echo "<script>alert('Please Choose Shipping First !!')</script>";
     }
@@ -169,7 +165,6 @@ if (isset($_POST['proceed'])) {
                                                         <td>
                                                             <div class="table-data">
                                                                 <form method="POST">
-                                                                    <input id="cid" name="cid" type="hidden" value="<?php echo $row['customer_id']; ?>">
                                                                     <input id="pid" name="pid" type="hidden" value="<?php echo $row['product_id']; ?>">
                                                                     <button name="deletecart" class="close-btn"><i class="fal fa-times"></i></button>
                                                                 </form>
@@ -181,8 +176,8 @@ if (isset($_POST['proceed'])) {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div class="table-data">
-                                                                <h6><a href="single-product.php" class="title"><?php echo $row['product_name']; ?></a>
+                                                            <div class="table-data product-desc">
+                                                                <h6><a href="single-product.php?id=<?php echo $row['product_id']; ?>" class="title"><?php echo $row['product_name']; ?></a>
                                                                 </h6>
                                                             </div>
                                                         </td>
@@ -197,7 +192,6 @@ if (isset($_POST['proceed'])) {
                                                                 <form method="POST">
                                                                     <input id="pname" name="pname" type="hidden" value="<?php echo $row['product_name']; ?>">
                                                                     <input id="stock" name="stock" type="hidden" value="<?php echo $row['product_stock']; ?>">
-                                                                    <input id="cid2" name="cid2" type="hidden" value="<?php echo $row['customer_id']; ?>">
                                                                     <input id="pid2" name="pid2" type="hidden" value="<?php echo $row['product_id']; ?>">
                                                                     <input name="updateqty" onchange="this.form.submit()" type="number" value="<?php echo $row['quantity']; ?>" min="1" max="<?php echo $row['product_stock']; ?>" style="margin-right: 20px; width: 119px;">
                                                                 </form>
@@ -238,8 +232,8 @@ if (isset($_POST['proceed'])) {
                                                         <div class="form-group">
                                                             <form method="post">
                                                                 <select name="updateprov" onchange="this.form.submit()" class="form-control" required>
-                                                                    <option value="<?php echo $provname; ?>">
-                                                                        <?php echo $provname; ?></option>
+                                                                    <option value="<?php echo $_SESSION['provname']; ?>">
+                                                                        <?php echo $_SESSION['provname']; ?></option>
                                                                     <?php
                                                                     $curl = curl_init();
                                                                     curl_setopt_array($curl, array(
@@ -269,15 +263,14 @@ if (isset($_POST['proceed'])) {
                                                         <label class="control-label">City</label>
                                                         <div class="form-group">
                                                             <form method="post">
-                                                                <input id="prov" name="prov" type="hidden" value="<?php echo $provid . '|' . $provname ?>">
                                                                 <select name="updatecity" onchange="this.form.submit()" class="form-control" required>
-                                                                    <option value="<?php echo $cityname; ?>">
-                                                                        <?php echo $cityname; ?></option>
+                                                                    <option value="<?php echo $_SESSION['cityname']; ?>">
+                                                                        <?php echo $_SESSION['cityname']; ?></option>
                                                                     <?php
-                                                                    if ($prov) {
+                                                                    if (isset($_SESSION['provid'])) {
                                                                         $curl = curl_init();
                                                                         curl_setopt_array($curl, array(
-                                                                            CURLOPT_URL => "http://api.rajaongkir.com/starter/city?province=" . $provid . "",
+                                                                            CURLOPT_URL => "http://api.rajaongkir.com/starter/city?province=" . $_SESSION['provid'] . "",
                                                                             CURLOPT_RETURNTRANSFER => true,
                                                                             CURLOPT_ENCODING => "",
                                                                             CURLOPT_MAXREDIRS => 10,
@@ -304,7 +297,7 @@ if (isset($_POST['proceed'])) {
                                                     </div>
                                                     <div>
                                                         <?php
-                                                        if (isset($_POST['updatecity']) || $ship) {
+                                                        if (isset($_SESSION['cityid'])) {
                                                             $curl = curl_init();
 
                                                             curl_setopt_array($curl, array(
@@ -315,7 +308,7 @@ if (isset($_POST['proceed'])) {
                                                                 CURLOPT_TIMEOUT => 30,
                                                                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                                                                 CURLOPT_CUSTOMREQUEST => "POST",
-                                                                CURLOPT_POSTFIELDS => "origin=444&destination=" . $cityid . "&weight=" . $rowsumq['sumquantity'] * 500 . "&courier=jne",
+                                                                CURLOPT_POSTFIELDS => "origin=444&destination=" . $_SESSION['cityid'] . "&weight=" . $rowsumq['sumquantity'] * 500 . "&courier=jne",
                                                                 CURLOPT_HTTPHEADER => array(
                                                                     "content-type: application/x-www-form-urlencoded",
                                                                     "key: 33b4623ebaec869103303a234d1a6ddb"
@@ -326,7 +319,6 @@ if (isset($_POST['proceed'])) {
                                                             $err = curl_error($curl);
                                                             curl_close($curl);
                                                             $jne = json_decode($response, true);
-                                                            $courier = $jne['rajaongkir']['results'][0]['code'];
                                                             $datao = $jne['rajaongkir']['results'][0]['costs'];
 
                                                         ?>
@@ -336,24 +328,22 @@ if (isset($_POST['proceed'])) {
                                                                         <?php
                                                                         foreach ($datao as $val1) {
                                                                             echo "<tr>";
-                                                                            echo "<td> <input name='cour' type='hidden' value='" . strtoupper($courier) . "'>" . strtoupper($courier) . "</td>";
+                                                                            echo "<td> <input name='cour' type='hidden' value='" . strtoupper($jne['rajaongkir']['results'][0]['code']) . "'>" . strtoupper($jne['rajaongkir']['results'][0]['code']) . "</td>";
                                                                             echo "<td> <input name='serv' type='hidden' value='" . $val1['service'] . "'>" . $val1['service'] . "</td>";
 
                                                                             foreach ($val1['cost'] as $val2) {
                                                                                 echo "<td align='right'>Rp " . number_format($val2['value']) . "</td>";
                                                                                 echo "<td>" . $val2['etd'] . " Days</td>";
-                                                                                if ($ship == $val2['value']) {
-                                                                                    echo "<td><input style='width=35px;' type='radio' name='ship' onchange='this.form.submit()' value='" . $val2['value'] . "' checked></td>";
+                                                                                if ($_SESSION['shipprice'] == $val2['value']) {
+                                                                                    echo "<td><input type='radio' name='ship' onchange='this.form.submit()' value='" . $val2['value'] . "' checked></td>";
                                                                                 } else {
-                                                                                    echo "<td><input style='width=35px;' type='radio' name='ship' onchange='this.form.submit()' value='" . $val2['value'] . "' ></td>";
+                                                                                    echo "<td><input type='radio' name='ship' onchange='this.form.submit()' value='" . $val2['value'] . "' ></td>";
                                                                                 }
                                                                             }
 
                                                                             echo "</tr>";
                                                                         }
                                                                         ?>
-                                                                        <input id='city' name='city' type='hidden' value='<?php echo $cityid ?>|<?php echo $cityname ?>'>
-                                                                        <input id='prov' name='prov' type='hidden' value='<?php echo $provid ?>|<?php echo $provname ?>'>
                                                                     </form>
                                                                 </tbody>
                                                             </table>
@@ -367,16 +357,11 @@ if (isset($_POST['proceed'])) {
                                             <tr>
                                                 <th>Total</th>
                                                 <td><strong class="red-color">Rp.
-                                                        <?php echo number_format($row2['sumprice'] + $ship) ?></strong></td>
+                                                        <?php echo number_format($row2['sumprice'] + $_SESSION['shipprice']) ?></strong></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <form method="post">
-                                        <input name='city' type='hidden' value='<?php echo $cityname ?>'>
-                                        <input name='prov' type='hidden' value='<?php echo $provname ?>'>
-                                        <input name='cour' type='hidden' value='<?php echo $cour ?>'>
-                                        <input name='serv' type='hidden' value='<?php echo $serv ?>'>
-                                        <input name='ship' type='hidden' value='<?php echo $ship ?>'>
                                         <button name="proceed" class="mt-40 generic-btn red-hover-btn w-100 d-block text-uppercase">Proceed to
                                             checkout</button>
                                     </form>

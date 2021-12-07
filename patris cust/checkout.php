@@ -10,27 +10,85 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
 } else {
     $user = $_SESSION['username'];
+    $userid = $_SESSION['userid'];
 }
 
 $ship = $_SESSION['shipprice'];
-$city = $_SESSION['city'];
-$prov = $_SESSION['province'];
+$city = $_SESSION['cityname'];
+$prov = $_SESSION['provname'];
 $cour = $_SESSION['courier'];
 $serv = $_SESSION['service'];
 
-$sql = "SELECT * FROM customer cs, cart c, product p where cs.customer_id=c.customer_id and c.product_id=p.product_id and cs.customer_username='$user'";
+
+
+$sql = "SELECT * FROM cart c, product p where c.product_id=p.product_id and customer_id='$userid'";
 $result = mysqli_query($conn, $sql);
 
-$sql2 = "SELECT sum(c.quantity*p.product_price) as sumprice FROM customer cs, cart c, product p where cs.customer_id=c.customer_id and c.product_id=p.product_id and cs.customer_username='$user'";
+$sql2 = "SELECT sum(c.quantity*p.product_price) as sumprice FROM cart c, product p where c.product_id=p.product_id and customer_id='$userid'";
 $result2 = mysqli_query($conn, $sql2);
 $row2 = mysqli_fetch_assoc($result2);
+$sumprice = $row2['sumprice'];
 
-$sql3 = "SELECT * FROM customer where customer_username='$user'";
+$sql2 = "SELECT sum(quantity) as sumquantity FROM cart  where customer_id='$userid'";
+$result2 = mysqli_query($conn, $sql2);
+$row2 = mysqli_fetch_assoc($result2);
+$sumquantity = $row2['sumquantity'];
+
+$sql3 = "SELECT * FROM customer where customer_id='$userid'";
 $result3 = mysqli_query($conn, $sql3);
 $row3 = mysqli_fetch_assoc($result3);
 $name = explode(' ', $row3['customer_name']);
 $first = $name[0];
 $last = $name[1];
+
+if (isset($_POST['placeorder'])) {
+    $payment = $_POST['payment'];
+    $receiver = $_POST['firstname'] . " " . $_POST['lastname'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
+    $date = date("Y-m-d");
+    $shiporder = $cour . " " . $serv;
+    $total = $sumprice + $ship;
+
+    $sql4 = "INSERT INTO payment(payment_methode, payment_status) VALUES ('$payment', 'Not Paid')";
+    if (!mysqli_query($conn, $sql4)) {
+        echo "<script>alert('Something is wrong.')</script>";
+    }
+    $payid = mysqli_insert_id($conn);
+
+    $sql5 = "INSERT INTO orders(customer_id, payment_id, order_date, order_status, order_address, 
+    order_receiver, order_cost, order_sumproduct, order_city, order_province, order_ship, order_shipcost, order_total) 
+    VALUES ('$userid','$payid','$date','Waiting for payment','$address','$receiver','$sumprice','$sumquantity','$city',
+    '$prov','$shiporder','$ship','$total')";
+    if (!mysqli_query($conn, $sql5)) {
+        echo "<script>alert('Something is wrong.')</script>";
+    }
+    $ordid = mysqli_insert_id($conn);
+
+    $sql6 = "SELECT * FROM cart c, product p where c.product_id=p.product_id and customer_id='$userid'";
+    $result6 = mysqli_query($conn, $sql6);
+
+    while ($row6 = mysqli_fetch_assoc($result6)) {
+        $pid = $row6['product_id'];
+        $qty = $row6['quantity'];
+        $sql7 = "INSERT INTO order_detail(order_id, product_id, quantity) VALUES ('$ordid','$pid','$qty')";
+        if (!mysqli_query($conn, $sql7)) {
+            echo "<script>alert('Something is wrong.')</script>";
+        }
+        $sql8 = "UPDATE product set product_stock = product_stock-'$qty' where product_id='$pid'";
+        if (!mysqli_query($conn, $sql8)) {
+            echo "<script>alert('Something is wrong.')</script>";
+        }
+    }
+    $sql9 = "DELETE from cart where customer_id='$userid'";
+    if (!mysqli_query($conn, $sql9)) {
+        echo "<script>alert('Something is wrong.')</script>";
+    }
+
+    unset($_SESSION['provid'], $_SESSION['provname'], $_SESSION['cityid'], $_SESSION['cityname'], $_SESSION['courier'], $_SESSION['service'], $_SESSION['shipprice']);
+
+    header("Location: order.php?id=".$ordid);
+}
 
 
 ?>
@@ -83,55 +141,50 @@ $last = $name[1];
         </section>
         <section class="checkout-area pb-70">
             <div class="container">
-                <form action="#">
+                <form method="post">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="checkbox-form">
-                                <h3>Billing Details</h3>
+                                <h3>Shipment Details</h3>
                                 <div class="row">
 
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>First Name <span class="required">*</span></label>
-                                            <input type="text" value="<?php echo $first ?>" required />
+                                            <input type="text" name="firstname" value="<?php echo $first ?>" required />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Last Name <span class="required">*</span></label>
-                                            <input type="text" value="<?php echo $last ?>" required />
+                                            <input type="text" name="lastname" value="<?php echo $last ?>" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Phone <span class="required">*</span></label>
+                                            <input type="text" name="phone" value="<?php echo $row3['customer_telp'] ?>" required />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label>Address <span class="required">*</span></label>
-                                            <input type="text" required />
+                                            <input type="text" name="address" required />
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>City</label>
                                             <input type="text" value="<?php echo $city ?>" disabled />
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Province</label>
                                             <input type="text" value="<?php echo $prov ?>" disabled />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="checkout-form-list">
-                                            <label>Postcode <span class="required">*</span></label>
-                                            <input type="text" required />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="checkout-form-list">
-                                            <label>Phone <span class="required">*</span></label>
-                                            <input type="text" value="<?php echo $row3['customer_telp'] ?>" required />
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -161,7 +214,7 @@ $last = $name[1];
                                         <tfoot>
                                             <tr class="cart-subtotal">
                                                 <th>Cart Subtotal</th>
-                                                <td><span class="amount red-color">Rp. <?php echo number_format($row2['sumprice']) ?></span></td>
+                                                <td><span class="amount red-color">Rp. <?php echo number_format($sumprice) ?></span></td>
                                             </tr>
                                             <tr class="shipping">
                                                 <th>Shipping (<?php echo strtoupper($cour) ?> <?php echo $serv ?>)</th>
@@ -169,70 +222,35 @@ $last = $name[1];
                                             </tr>
                                             <tr class="order-total">
                                                 <th>Order Total</th>
-                                                <td><strong><span class="amount">Rp. <?php echo number_format($row2['sumprice'] + $ship) ?></span></strong>
+                                                <td><strong><span class="amount">Rp. <?php echo number_format($sumprice + $ship) ?></span></strong>
                                                 </td>
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </div>
-
+                                <h3 class="mt-5">Payment Method</h3>
                                 <div class="payment-method">
                                     <div class="accordion" id="accordionExample">
                                         <div class="card">
                                             <div class="card-header" id="headingOne">
                                                 <h5 class="mb-0">
-                                                    <button class="btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                        Direct Bank Transfer
-                                                    </button>
+                                                    Bank Transfer
                                                 </h5>
                                             </div>
-
-                                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                                <div class="card-body">
-                                                    Make your payment directly into our bank account. Please use your
-                                                    Order ID
-                                                    as the payment
-                                                    reference. Your order won’t be
-                                                    shipped until the funds have cleared in our account.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header" id="headingTwo">
-                                                <h5 class="mb-0">
-                                                    <button class="btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                        Cheque Payment
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                                <div class="card-body">
-                                                    Please send your cheque to Store Name, Store Street, Store Town,
-                                                    Store
-                                                    State / County, Store
-                                                    Postcode.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header" id="headingThree">
-                                                <h5 class="mb-0">
-                                                    <button class="btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                        PayPal
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                                <div class="card-body">
-                                                    Pay via PayPal; you can pay with your credit card if you don’t have
-                                                    a
-                                                    PayPal account.
-                                                </div>
+                                            <div class="card-body">
+                                                <input required type="radio" name="payment" value="BCA" style="transform: scale(1.5); margin: 10px;">
+                                                <label for="payment1">
+                                                    <h6>BCA</h6>
+                                                </label><br>
+                                                <input required type="radio" name="payment" value="MANDIRI" style="transform: scale(1.5); margin: 10px;">
+                                                <label for="payment2">
+                                                    <h6>MANDIRI</h6>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="order-button-payment mt-20">
-                                        <button type="submit" class="btn theme-btn">Place order</button>
+                                        <button name="placeorder" type="submit" class="btn theme-btn">Place order</button>
                                         <div class="or-divide"><span>or</span></div>
                                         <a href="cart.php" class="btn theme-btn-2 w-100">Back to cart</a>
                                     </div>

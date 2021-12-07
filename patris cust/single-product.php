@@ -7,6 +7,7 @@ session_start();
 
 if (isset($_SESSION['username'])) {
     $user = $_SESSION['username'];
+    $userid = $_SESSION['userid'];
 }
 
 $id = $_GET['id'];
@@ -21,11 +22,6 @@ $num = $result2->num_rows;
 
 if (isset($_POST['submitqty'])) {
     if (isset($_SESSION['username'])) {
-        $sql3 = "SELECT customer_id FROM customer where customer_username = '$user'";
-        $result3 = mysqli_query($conn, $sql3);
-        $row3 = mysqli_fetch_assoc($result3);
-
-        $userid = $row3['customer_id'];
         $qty = $_POST['qty'];
         $stock = $_POST['stock'];
         $pname = $_POST['pname'];
@@ -170,7 +166,7 @@ if (isset($_POST['submitqty'])) {
                                                             <div class="author-name">
                                                                 <h6>' . $row2['customer_name'] . '</h6>
                                                                 <div class="content">
-                                                                    <p class="mb-0">' . $row2['review_desc'] . '</p>
+                                                                    <p class="mb-3">' . $row2['review_desc'] . '</p>
                                                                 </div>
                                                             </div>
                                                         </div>

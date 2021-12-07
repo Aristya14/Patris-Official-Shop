@@ -19,6 +19,7 @@ if (isset($_POST['submit'])) {
     if ($result->num_rows == 1) {
         $row = mysqli_fetch_assoc($result);
         $_SESSION['username'] = $row['customer_username'];
+        $_SESSION['userid'] = $row['customer_id'];
         header("Location: index.php");
     } else {
         $password = $_POST['pass'];

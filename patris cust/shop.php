@@ -7,6 +7,7 @@ session_start();
 
 if (isset($_SESSION['username'])) {
     $user = $_SESSION['username'];
+    $userid = $_SESSION['userid'];
 }
 
 if ($_GET['cat']) {
