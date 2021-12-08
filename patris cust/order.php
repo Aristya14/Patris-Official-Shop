@@ -69,11 +69,6 @@ if (isset($_GET['id'])) {
         }
     }
 
-    // if (isset($_POST['review'])) {
-    //     $pid = $_POST['pid'];
-    //     $pname = $_POST['pname'];
-    // }
-
     if (isset($_POST['review'])) {
         $pid = $_GET['pid'];
         $orderid = $_GET['id'];
@@ -86,6 +81,14 @@ if (isset($_GET['id'])) {
         } else {
             header("Location: order.php?id=" .  $_GET['id']);
         }
+    }
+
+    $sql8 = "SELECT product_id from review where order_id = '$orderid'";
+    $result8 = mysqli_query($conn, $sql8);
+    if (!$result8) {
+        echo "<script>alert('Something is wrong.')</script>";
+    } else {
+        $revpid=mysqli_fetch_all($result8, MYSQLI_NUM);
     }
 } else {
     $sql = "SELECT * from orders o, payment p where o.payment_id=p.payment_id  and customer_id = '$userid'";
@@ -298,10 +301,9 @@ if (isset($_GET['id'])) {
                                             <tr>
                                                 <td class="product-desc">
                                                     <a href="single-product.php?id=<?php echo $row['product_id'] ?>"><?php echo $row['product_name'] ?></a>
-                                                    <?php if (!strcmp($row3['order_status'], "Shipped")) { ?>
-                                                        <br>
-                                                        <a href="order.php?id=<?php echo $row['order_id'] ?>&pid=<?php echo $row['product_id']; ?>&pname=<?php echo $row['product_name']; ?>"><button class="red-hover-btn">Give Review</button></a>
-                                                    <?php } ?>
+                                                    <?php if (!strcmp($row3['order_status'], "Shipped") && !in_array($row['product_id'], $revpid[0])) {
+                                                        echo '<br><a href="order.php?id=' . $row['order_id'] . '&pid=' . $row['product_id'] . '&pname=' . $row['product_name'] . '"><button class="red-hover-btn">Give Review</button></a>';
+                                                    } ?>
                                                 </td>
                                                 <td><?php echo $row['product_size'] ?></td>
 
