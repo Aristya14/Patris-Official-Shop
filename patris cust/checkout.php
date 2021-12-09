@@ -122,7 +122,7 @@ if (isset($_POST['placeorder'])) {
 <body>
     <?php include 'header.php'; ?>
     <main>
-        <section class="breadcrumb-area" data-background="img/bg/page-title.png">
+        <section class="breadcrumb-area">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">

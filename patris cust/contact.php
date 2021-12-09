@@ -20,7 +20,7 @@ session_start();
 
     <link rel="manifest" href="site.webmanifest">
     <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
-    
+
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/fontawesome.min.css">
@@ -37,7 +37,7 @@ session_start();
 
 <body>
     <?php include 'header.php'; ?>
-    <section class="contact-area pb-30" data-background="assets/img/bg/bg-map.png">
+    <section class="contact-area pb-30">
         <div class="has-breadcrumb-bg mb-120" style="background-image: url('img/contact.jpg');"></div>
         <div class="container container-1430">
             <div class="row">
