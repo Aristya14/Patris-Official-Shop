@@ -12,8 +12,7 @@
                                         Customer Service
                                     </p>
                                     <p style="color: #FFFFFF;font-size: 20px;font-weight: 20px;margin-top: 40px;">
-                                        Jam
-                                        Kerja: 09.00 s/d 15.00 WIB
+                                        Open Hours: 09.00 s/d 15.00 WIB
                                     </p>
                                 </div>
                             </div>

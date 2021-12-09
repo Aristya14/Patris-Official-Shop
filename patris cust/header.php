@@ -171,8 +171,8 @@ if (isset($_POST['submitsearch'])) {
         <div class="mobile-menu visible-sm">
             <div id="mobile-menu">
                 <ul>
-                    <li><a class="pl-3" href="javascript:void(0)" href="index.php">Home</a></li>
-                    <li><a class="pl-3" href="javascript:void(0)" href="shop.php">Shop</a></li>
+                    <li><a class="pl-3" href="index.php">Home</a></li>
+                    <li><a class="pl-3" href="shop.php">Shop</a></li>
                     <li><a href="contact.php">Contact</a></li>
                 </ul>
             </div>

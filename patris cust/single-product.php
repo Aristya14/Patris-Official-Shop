@@ -140,10 +140,10 @@ if (isset($_POST['submitqty'])) {
                     </div>
                 </div>
 
-                <div class="single-product-bottom mt-80 gray-border-top">
+                <div class="single-product-bottom mt-80 gray-border-top" id="review">
                     <ul class="nav nav-pills justify-content-center mt-100" role="tablist">
                         <li class="nav-item">
-                            <a class="active" data-toggle="pill" href="#desc-tab-2">Reviews (<?php echo $num; ?>)</a>
+                            <a class="active">Reviews (<?php echo $num; ?>)</a>
                         </li>
                     </ul>
                     <div class="container container-1200">

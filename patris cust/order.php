@@ -69,26 +69,14 @@ if (isset($_GET['id'])) {
         }
     }
 
-    if (isset($_POST['review'])) {
-        $pid = $_GET['pid'];
-        $orderid = $_GET['id'];
-        $rating = $_POST['rating'];
-        $desc = $_POST['desc'];
-        $sql7 = "INSERT INTO review(product_id, order_id, review_rating, review_desc) 
-        VALUES ('$pid','$orderid','$rating','$desc')";
-        if (!mysqli_query($conn, $sql7)) {
-            echo "<script>alert('Something is wrong.')</script>";
-        } else {
-            header("Location: order.php?id=" .  $_GET['id']);
-        }
-    }
-
     $sql8 = "SELECT product_id from review where order_id = '$orderid'";
     $result8 = mysqli_query($conn, $sql8);
     if (!$result8) {
         echo "<script>alert('Something is wrong.')</script>";
     } else {
-        $revpid=mysqli_fetch_all($result8, MYSQLI_NUM);
+        while ($row8 = mysqli_fetch_assoc($result8))
+            $revpid[] = $row8['product_id'];
+        // $revpid=mysqli_fetch_all($result8, MYSQLI_NUM);
     }
 } else {
     $sql = "SELECT * from orders o, payment p where o.payment_id=p.payment_id  and customer_id = '$userid'";
@@ -194,31 +182,6 @@ if (isset($_GET['id'])) {
         </div>
     </div>
 
-    <div class="modal" data-bs-backdrop="static" <?php if (isset($_GET['pid'])) {
-                                                        echo 'style="display:block; background-color:white;"';
-                                                    } ?>>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="post">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Give Review for <?php echo $_GET['pname']; ?></h5>
-                        <a href="order.php?id=<?php echo $_GET['id'] ?>"><button type="button" class="close" data-dismiss="modal">
-                                <span aria-hidden="true">&times;</span>
-                            </button></a>
-                    </div>
-                    <div class="modal-body basic-login">
-                        <label for="rating"><strong>Rating (1-5)</strong></label>
-                        <input type="number" name="rating" min="1" max="5" value="5">
-                        <label for="desc"><strong>Review</strong></label>
-                        <textarea name="desc" cols="32" rows="5"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button name="review" class="generic-btn red-hover-btn">Submit Review</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <main>
         <section class="breadcrumb-area">
             <div class="container">
@@ -301,8 +264,11 @@ if (isset($_GET['id'])) {
                                             <tr>
                                                 <td class="product-desc">
                                                     <a href="single-product.php?id=<?php echo $row['product_id'] ?>"><?php echo $row['product_name'] ?></a>
-                                                    <?php if (!strcmp($row3['order_status'], "Shipped") && !in_array($row['product_id'], $revpid[0])) {
-                                                        echo '<br><a href="order.php?id=' . $row['order_id'] . '&pid=' . $row['product_id'] . '&pname=' . $row['product_name'] . '"><button class="red-hover-btn">Give Review</button></a>';
+                                                    <br>
+                                                    <?php if (!strcmp($row3['order_status'], "Shipped") && !in_array($row['product_id'], $revpid)) {
+                                                        echo '<a href="review.php?id=' . $row['order_id'] . '&pid=' . $row['product_id'] . '"><button class="red-hover-btn">Give Review</button></a>';
+                                                    } else {
+                                                        echo '<a href="single-product.php?id=' . $row['product_id'] . '#review"><button class="red-hover-btn">View Your Review</button></a>';
                                                     } ?>
                                                 </td>
                                                 <td><?php echo $row['product_size'] ?></td>
