@@ -22,17 +22,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['userid'] = $row['customer_id'];
         header("Location: index.php");
     } else {
-        $password = $_POST['pass'];
-
-        $sql = "SELECT * FROM admin WHERE username = '$email' AND password='$password'";
-        $result = mysqli_query($conn, $sql);
-        if ($result->num_rows == 1) {
-            $row = mysqli_fetch_assoc($result);
-            $_SESSION['username'] = $row['username'];
-            header("Location: admin.php");
-        } else {
-            echo "<script>alert('Username or Password is wrong. Please try again!')</script>";
-        }
+        echo "<script>alert('Username or Password is wrong. Please try again!')</script>";
     }
 }
 
