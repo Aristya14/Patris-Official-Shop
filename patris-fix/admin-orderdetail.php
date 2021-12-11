@@ -11,13 +11,38 @@ if (!isset($_SESSION['adminid'])) {
 
 $id = $_GET['id'];
 
-$sql = "SELECT * FROM orders WHERE order_id=$id";
+$sql = "SELECT * FROM orders o, payment p WHERE p.payment_id=o.payment_id and order_id=$id";
 $query = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($query);
 
 $sql2 = "SELECT * FROM order_detail od, product p WHERE od.product_id=p.product_id and order_id=$id";
 $query2 = mysqli_query($conn, $sql2);
 
+if (isset($_POST['invalid'])) {
+    $pid = $_POST['pid'];
+    $sql3 = "UPDATE payment set payment_proof=NULL where payment_id = '$pid'";
+    if (!mysqli_query($conn, $sql3)) {
+        echo "<script>alert('Something is wrong.')</script>";
+    } else {
+        header("Refresh:0");
+    }
+}
+
+if (isset($_POST['confirm'])) {
+    $date = date("Y-m-d");
+    $pid = $_POST['pid'];
+    $sql3 = "UPDATE orders set order_status='On Shipping' where order_id = '$id'";
+    if (!mysqli_query($conn, $sql3)) {
+        echo "<script>alert('Something is wrong.')</script>";
+    } else {
+        $sql4 = "UPDATE payment set payment_status='Paid', payment_date='$date' where payment_id = '$pid'";
+        if (!mysqli_query($conn, $sql4)) {
+            echo "<script>alert('Something is wrong.')</script>";
+        } else {
+            header("Refresh:0");
+        }
+    }
+}
 
 ?>
 
@@ -37,6 +62,31 @@ $query2 = mysqli_query($conn, $sql2);
 </head>
 
 <body>
+    <div class="modal fade" id="confirmreceived">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img src="data:image/jpeg;base64,<?php echo base64_encode($row['payment_proof']) ?>" class="w-100" alt="">
+                </div>
+                <div class="modal-footer">
+                    <form method="POST">
+                        <input type="hidden" name="pid" value="<?php echo $row['payment_id'] ?>">
+                        <button name="invalid" class="btn btn-secondary">Payment Invalid</button>
+                    </form>
+                    <form method="POST">
+                        <input type="hidden" name="pid" value="<?php echo $row['payment_id'] ?>">
+                        <button name="confirm" class="btn btn-danger">Confirm Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="sidebar" data-color="white" data-active-color="danger">
         <div class="logo">
             <a href="admin-dash.php" class="simple-text logo-mini">
@@ -97,30 +147,76 @@ $query2 = mysqli_query($conn, $sql2);
         </nav>
         <div class="content">
             <div class="card">
-                <div class="card-header text-center">
-                    <h2 class="card-title">Order Detail</h2>
+                <div class="card-header">
+                    <h2 class="card-title text-center">Order Detail ID = <?php echo $row['order_id'] ?></h2>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered w-50">
-                        <tbody>
-                            <tr>
-                                <th class="text-white w-25" style="background-color:#F0628C;">Penerima</th>
-                                <td><?php echo $row['order_receiver'] ?></td>
-                            </tr>
-                            <tr>
-                                <th class="text-white w-25" style="background-color:#F0628C;">Provinsi</th>
-                                <td><?php echo $row['order_province'] ?></td>
-                            </tr>
-                            <tr>
-                                <th class="text-white w-25" style="background-color:#F0628C;">Kota</th>
-                                <td><?php echo $row['order_city'] ?></td>
-                            </tr>
-                            <tr>
-                                <th class="text-white w-25" style="background-color:#F0628C;">Alamat</th>
-                                <td><?php echo $row['order_address'] ?></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <a href="admin-order.php" class="btn btn-danger">Back To Orders</a><br>
+                    <?php if (!$row['payment_date'] && $row['payment_proof']) { ?>
+                        <a href="" data-toggle="modal" data-target="#confirmreceived" class="btn btn-danger text-right">Confirm Payment</a><br>
+                    <?php } ?>
+                    <div class="row px-3">
+                        <table class="table table-bordered w-50">
+                            <tbody>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Penerima</th>
+                                    <td><?php echo $row['order_receiver'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Provinsi</th>
+                                    <td><?php echo $row['order_province'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Kota</th>
+                                    <td><?php echo $row['order_city'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Alamat</th>
+                                    <td><?php echo $row['order_address'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Tanggal Order</th>
+                                    <td><?php echo $row['order_date'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Status Order</th>
+                                    <td><?php echo $row['order_status'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Diterima</th>
+                                    <td><?php echo $row['order_received'] ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered w-50">
+                            <tbody>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Pembayaran</th>
+                                    <td><?php echo $row['payment_methode'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Status</th>
+                                    <td><?php echo $row['payment_status'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Tanggal</th>
+                                    <td><?php echo $row['payment_date'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Pengiriman</th>
+                                    <td><?php echo $row['order_ship'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Ongkos Kirim</th>
+                                    <td><?php echo $row['order_shipcost'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">Total Bayar</th>
+                                    <td><?php echo $row['order_total'] ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <table class="table table-bordered">
                         <thead style="background-color:#F0628C;">
                             <tr class="text-white text-center">
@@ -132,14 +228,14 @@ $query2 = mysqli_query($conn, $sql2);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($row2 = mysqli_fetch_assoc($query2)) {?>
-                            <tr>
-                                <td><?php echo $row2['product_id'] ?></td>
-                                <td><?php echo $row2['product_name'] ?></td>
-                                <td><?php echo $row2['product_size'] ?></td>
-                                <td><?php echo $row2['product_price'] ?></td>
-                                <td><?php echo $row2['quantity'] ?></td>
-                            </tr>
+                            <?php while ($row2 = mysqli_fetch_assoc($query2)) { ?>
+                                <tr>
+                                    <td><?php echo $row2['product_id'] ?></td>
+                                    <td><?php echo $row2['product_name'] ?></td>
+                                    <td><?php echo $row2['product_size'] ?></td>
+                                    <td><?php echo $row2['product_price'] ?></td>
+                                    <td><?php echo $row2['quantity'] ?></td>
+                                </tr>
                             <?php } ?>
                         </tbody>
                     </table>

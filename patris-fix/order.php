@@ -241,9 +241,11 @@ if (isset($_GET['id'])) {
                                         echo '<br>';
                                         if ($row3['payment_proof']) {
                                             echo '<h6 class="red-color">Payment Proof Uploaded</h6>';
+                                            echo '<h6 class="red-color">Please Wait for Payment Confirmation</h6>';
+                                        } else {
+                                            echo '<button data-toggle="modal" data-target="#uploadpayment" class="generic-btn red-hover-btn mr-5">Upload Payment</button>';
+                                            echo '<button data-toggle="modal" data-target="#changepayment" class="generic-btn red-hover-btn">Change Payment</button>';
                                         }
-                                        echo '<button data-toggle="modal" data-target="#uploadpayment" class="generic-btn red-hover-btn mr-5">Upload Payment</button>';
-                                        echo '<button data-toggle="modal" data-target="#changepayment" class="generic-btn red-hover-btn">Change Payment</button>';
                                     } ?>
                                 </div>
                             </div>
@@ -312,6 +314,7 @@ if (isset($_GET['id'])) {
                                             <th>Order Id</th>
                                             <th>Order Date</th>
                                             <th>Order Status</th>
+                                            <th>Received Date</th>
                                             <th>Shipment</th>
                                             <th>Payment Method</th>
                                             <th>Payment Date</th>
@@ -326,6 +329,7 @@ if (isset($_GET['id'])) {
                                                 <td><?php echo $row['order_id'] ?></td>
                                                 <td><?php echo $row['order_date'] ?></td>
                                                 <td class="red-color"><?php echo $row['order_status'] ?></td>
+                                                <td><?php echo $row['order_received'] ?></td>
                                                 <td><?php echo $row['order_ship'] ?></td>
                                                 <td><?php echo $row['payment_methode'] ?></td>
                                                 <td><?php echo $row['payment_date'] ?></td>

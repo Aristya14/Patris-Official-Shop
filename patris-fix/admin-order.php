@@ -95,20 +95,32 @@ if (!isset($_SESSION['adminid'])) {
                     <table class="table table-bordered">
                         <thead style="background-color:#F0628C;">
                             <tr class="text-white text-center">
-                                <th>ID Order</th>
+                                <th>ID</th>
                                 <th>Customer</th>
-                                <th>Status</th>
+                                <th>Tanggal Order</th>
+                                <th>Status Order</th>
+                                <th>Tanggal Diterima</th>
+                                <th>Tanggal Pembayaran</th>
+                                <th>Status Pembayaran</th>
                                 <th>Tindakan</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $sql = "SELECT o.order_id , c.customer_name , o.order_status from orders o, customer c where o.customer_id=c.customer_id;";
+                            $sql = "SELECT * from orders o, customer c, payment p where o.customer_id=c.customer_id and o.payment_id=p.payment_id;";
                             $query = mysqli_query($conn, $sql);
                             while ($data = mysqli_fetch_array($query)) { ?>
                                 <td><?php echo $data['order_id']; ?></td>
                                 <td><?php echo $data['customer_name']; ?></td>
+                                <td><?php echo $data['order_date']; ?></td>
                                 <td><?php echo $data['order_status'] ?></td>
+                                <td><?php echo $data['order_received']; ?></td>
+                                <td><?php echo $data['payment_date']; ?></td>
+                                <?php if (!$data['payment_date'] && $data['payment_proof']) { ?>
+                                    <td class="text-danger text-center">Payment Proof Uploaded.<br>Please Confirm!!</td>
+                                <?php } else { ?>
+                                    <td><?php echo $data['payment_status']; ?></td>
+                                <?php } ?>
                                 <td class="text-center"><a href="admin-orderdetail.php?id=<?php echo $data['order_id']; ?>" class="btn btn-sm btn-danger">Detail</a></td>
                                 </tr>
                             <?php } ?>
