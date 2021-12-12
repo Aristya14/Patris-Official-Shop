@@ -58,7 +58,7 @@ if (isset($_POST['placeorder'])) {
 
     $sql5 = "INSERT INTO orders(customer_id, payment_id, order_date, order_status, order_address, 
     order_receiver, order_cost, order_sumproduct, order_city, order_province, order_ship, order_shipcost, order_total) 
-    VALUES ('$userid','$payid','$date','Waiting for payment','$address','$receiver','$sumprice','$sumquantity','$city',
+    VALUES ('$userid','$payid','$date','Waiting for Payment','$address','$receiver','$sumprice','$sumquantity','$city',
     '$prov','$shiporder','$ship','$total')";
     if (!mysqli_query($conn, $sql5)) {
         echo "<script>alert('Something is wrong.')</script>";

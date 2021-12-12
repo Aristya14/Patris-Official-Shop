@@ -175,7 +175,7 @@ if (isset($_GET['id'])) {
                         <p>Any complain can be send through our WhatsApp on Contact Page.</p>
                     </div>
                     <div class="modal-footer">
-                        <button name="received" class="generic-btn red-hover-btn">Continue</button>
+                        <button name="received" class="generic-btn red-hover-btn">Finish Order</button>
                     </div>
                 </form>
             </div>
@@ -216,6 +216,7 @@ if (isset($_GET['id'])) {
                                     <h6>Order Status: <span class="red-color"><?php echo $row3['order_status'] ?></span></h6>
                                     <h6>Received Date: <span class="red-color"><?php echo $row3['order_received'] ?></span></h6>
                                     <h6>Shipment: <span class="red-color"><?php echo $row3['order_ship'] ?></span></h6>
+                                    <h6>Shipment Number: <span class="red-color"><?php echo $row3['order_tracking'] ?></span></h6>
                                     <h6>Receiver: <span class="red-color"><?php echo $row3['order_receiver'] ?></span></h6>
                                     <h6>Address: <span class="red-color"><?php echo $row3['order_address'] ?></span></h6>
                                 </div>
@@ -228,13 +229,13 @@ if (isset($_GET['id'])) {
                                     if (!strcmp($row3['order_status'], "On Shipping")) {
                                         echo '<button data-toggle="modal" data-target="#confirmreceived" class="generic-btn red-hover-btn">Order Received</button>';
                                     }
-                                    if (!strcmp($row3['payment_status'], "Not Paid")) {
+                                    else if (!strcmp($row3['payment_status'], "Not Paid")) {
                                         echo '<h6>PAY TO BANK ACCOUNT BELOW (TRANSFER MISTAKE IS NOT OUR RESPONSIBILITY!!)</h6>';
                                         echo '<h6>Account Number: <span class="red-color">';
                                         if (!strcmp($row3['payment_methode'], "BCA")) {
-                                            echo  "5485 1999 07";
+                                            echo  "5485 1999 07 (BANK BCA)";
                                         } else {
-                                            echo  "16 5000 6000 997";
+                                            echo  "16 5000 6000 997 (BANK MANDIRI)";
                                         }
                                         echo '</span></h6>';
                                         echo '<h6>Account Name: <span class="red-color">PT PATRIS DIGITAL UTAMA</span></h6>';
@@ -269,7 +270,7 @@ if (isset($_GET['id'])) {
                                                     <br>
                                                     <?php if (!strcmp($row3['order_status'], "Shipped") && !in_array($row['product_id'], $revpid)) {
                                                         echo '<a href="review.php?id=' . $row['order_id'] . '&pid=' . $row['product_id'] . '"><button class="red-hover-btn">Give Review</button></a>';
-                                                    } else {
+                                                    } else if (!strcmp($row3['order_status'], "Shipped") && in_array($row['product_id'], $revpid)) {
                                                         echo '<a href="single-product.php?id=' . $row['product_id'] . '#review"><button class="red-hover-btn">View Your Review</button></a>';
                                                     } ?>
                                                 </td>

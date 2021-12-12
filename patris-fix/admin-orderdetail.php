@@ -31,7 +31,7 @@ if (isset($_POST['invalid'])) {
 if (isset($_POST['confirm'])) {
     $date = date("Y-m-d");
     $pid = $_POST['pid'];
-    $sql3 = "UPDATE orders set order_status='On Shipping' where order_id = '$id'";
+    $sql3 = "UPDATE orders set order_status='On Packing' where order_id = '$id'";
     if (!mysqli_query($conn, $sql3)) {
         echo "<script>alert('Something is wrong.')</script>";
     } else {
@@ -41,6 +41,17 @@ if (isset($_POST['confirm'])) {
         } else {
             header("Refresh:0");
         }
+    }
+}
+
+if (isset($_POST['confirmship'])) {
+    $pid = $_POST['pid'];
+    $tracking = $_POST['tracking'];
+    $sql3 = "UPDATE orders set order_status='On Shipping', order_tracking='$tracking' where order_id = '$id'";
+    if (!mysqli_query($conn, $sql3)) {
+        echo "<script>alert('Something is wrong.')</script>";
+    } else {
+        header("Refresh:0");
     }
 }
 
@@ -84,6 +95,28 @@ if (isset($_POST['confirm'])) {
                         <button name="confirm" class="btn btn-danger">Confirm Payment</button>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmshipping">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Shipping Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="pid" value="<?php echo $row['payment_id'] ?>">
+                        <label for="tracking">Shipping Number:</label>
+                        <input class="form-control" type="text" placeholder="Input Shipping Number" name="tracking" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button name="confirmship" class="btn btn-danger">Confirm Shipping</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -154,6 +187,8 @@ if (isset($_POST['confirm'])) {
                     <a href="admin-order.php" class="btn btn-danger">Back To Orders</a><br>
                     <?php if (!$row['payment_date'] && $row['payment_proof']) { ?>
                         <a href="" data-toggle="modal" data-target="#confirmreceived" class="btn btn-danger text-right">Confirm Payment</a><br>
+                    <?php } else if (!strcmp($row['order_status'], "On Packing")) { ?>
+                        <a href="" data-toggle="modal" data-target="#confirmshipping" class="btn btn-danger text-right">Confirm Shipping</a><br>
                     <?php } ?>
                     <div class="row px-3">
                         <table class="table table-bordered w-50">
@@ -205,6 +240,10 @@ if (isset($_POST['confirm'])) {
                                 <tr>
                                     <th class="text-white w-25" style="background-color:#F0628C;">Pengiriman</th>
                                     <td><?php echo $row['order_ship'] ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-white w-25" style="background-color:#F0628C;">No Resi</th>
+                                    <td><?php echo $row['order_tracking'] ?></td>
                                 </tr>
                                 <tr>
                                     <th class="text-white w-25" style="background-color:#F0628C;">Ongkos Kirim</th>

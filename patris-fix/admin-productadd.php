@@ -11,18 +11,21 @@ if (!isset($_SESSION['adminid'])) {
 
 if (isset($_POST['submit'])) {
     $nama = $_POST['product_name'];
-    $foto = $_POST['product_image'];
     $deskripsi = $_POST['product_desc'];
     $stock = $_POST['product_stock'];
     $category = $_POST['product_category'];
     $price = $_POST['product_price'];
     $size = $_POST['product_size'];
 
-    $sql = "INSERT INTO product (product_name, product_image, product_desc, product_stock, product_category, product_price, product_size)
-        VALUE ('$nama', '$foto', '$deskripsi', '$stock', '$category', '$price', '$size')";
-    $query = mysqli_query($conn, $sql);
+    $file_tmp = $_FILES['product_image']['tmp_name'];
+    $foto = file_get_contents($file_tmp);
 
-    if ($query) {
+    $stmt = mysqli_prepare($conn, 
+    "INSERT INTO product (product_name, product_image, product_desc, product_stock, product_category, product_price, product_size) VALUE (?, ?, ?, ?, ?, ?, ?)");
+
+    mysqli_stmt_bind_param($stmt, "sssssss", $nama, $foto, $deskripsi, $stock, $category, $price, $size);
+
+    if (mysqli_stmt_execute($stmt)) {
         header('Location: admin-product.php');
     } else {
         echo "<script>alert('Something is wrong.')</script>";
